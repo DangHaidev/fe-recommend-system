@@ -3,6 +3,8 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import "./vendor.css";
 import Script from "next/script";
+import { Header } from "../components/layout/Header";
+import { Footer } from "../components/layout/Footer";
 
 
 const inter = Inter({ subsets: ["latin"] });
@@ -20,7 +22,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        {children}
+        <Header />
+        <main>
+          {children}
+        </main>
+        <Footer />
         <Script src="/js/jquery-3.5.1.min.js" strategy="lazyOnload" />
         <Script src="/js/bootstrap.bundle.min.js" strategy="lazyOnload" />
         <Script src="/js/owl.carousel.min.js" strategy="lazyOnload" />

@@ -1,10 +1,10 @@
-import SignIn from "@/src/app/auth/login/signIn/page";
 import React from 'react';
+import Home from './(main)/home/page';
 
 const HomePage = () => {
     return (
         <main>
-            <SignIn />
+            <Home />
         </main>
     );
 };
