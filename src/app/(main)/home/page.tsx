@@ -14,9 +14,14 @@ export default function HomePage() {
             <p className="hero__text">
               Watch movies, TV shows and more — anytime, anywhere.
             </p>
-            <Link href="/catalog" className="btn btn-primary">
-              Browse Catalog
-            </Link>
+            <div className="hero__buttons">
+              <Link href="/catalog" className="btn btn-primary">
+                Browse Catalog
+              </Link>
+              <Link href="/profile" className="btn btn-secondary">
+                My Profile
+              </Link>
+            </div>
           </div>
           <div className="hero__image">
             <Image
