@@ -1,16 +1,13 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
+import "./vendor.css";
+import Script from "next/script";
+import { Header } from "../components/layout/Header";
+import { Footer } from "../components/layout/Footer";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -24,10 +21,21 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
+      <body className={inter.className}>
+        <Header />
+        <main>
+          {children}
+        </main>
+        <Footer />
+        <Script src="/js/jquery-3.5.1.min.js" strategy="lazyOnload" />
+        <Script src="/js/bootstrap.bundle.min.js" strategy="lazyOnload" />
+        <Script src="/js/owl.carousel.min.js" strategy="lazyOnload" />
+        <Script src="/js/slider-radio.js" strategy="lazyOnload" />
+        <Script src="/js/select2.min.js" strategy="lazyOnload" />
+        <Script src="/js/smooth-scrollbar.js" strategy="lazyOnload" />
+        <Script src="/js/jquery.magnific-popup.min.js" strategy="lazyOnload" />
+        {/* <Script src="/js/plyr.min.js" strategy="lazyOnload" /> */}
+        <Script src="/js/bootstrap.bundle.min.js" strategy="lazyOnload" />
       </body>
     </html>
   );

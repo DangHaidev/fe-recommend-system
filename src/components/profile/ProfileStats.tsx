@@ -50,9 +50,9 @@ export default function ProfileStats() {
   ];
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8  ">
       {stats.map((stat, index) => (
-        <div key={index} className="bg-gray-800 rounded-lg p-6 shadow-lg">
+        <div key={index} className="rounded-2xl pb-1 pt-4 pr-5 pl-4 shadow-lg" style={{ backgroundColor: '#151f30' }}>
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center">
               <span className="text-sm text-white font-medium font-sans">

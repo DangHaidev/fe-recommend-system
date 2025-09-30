@@ -11,19 +11,22 @@ export default function ProfileTabs({ activeTab, setActiveTab }: ProfileTabsProp
   ];
 
   return (
-    <div className="border-b border-gray-700">
-      <nav className="flex space-x-8">
+    <div className="border-none">
+      <nav className="flex space-x-12">
         {tabs.map((tab) => (
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}
-            className={`py-4 px-1 border-b-2 font-medium text-sm transition-colors ${
+            className={`relative py-2 px-4 text-sm font-sans transition-colors ${
               activeTab === tab.id
-                ? 'border-blue-500 text-blue-400'
-                : 'border-transparent text-gray-400 hover:text-gray-300 hover:border-gray-300'
+                ? 'text-blue-500'
+                : 'text-white hover:text-blue-300'
             }`}
           >
-            {tab.label}
+            <span>{tab.label}</span>
+            {activeTab === tab.id && (
+              <span className="absolute left-1/2 -translate-x-1/2 bottom-0 h-0.5 w-16 bg-blue-500 rounded-full" />
+            )}
           </button>
         ))}
       </nav>
