@@ -1,5 +1,5 @@
 import React from 'react';
-import Home from '../app/auth/home/page';
+import Home from './(main)/home/page';
 
 const HomePage = () => {
     return (
