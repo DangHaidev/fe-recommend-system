@@ -5471,3 +5471,111 @@ body::-webkit-scrollbar-thumb {
 .plyr--video .plyr__control svg {
   filter: none;
 }
+
+.series-wrap .swiper-slide {
+  width: 175px !important;
+  height: 100% !important;
+}
+
+/* Container bao quanh Swiper và các nút */
+.swiper-container {
+  position: relative;
+}
+
+/* Định dạng nút điều hướng tùy chỉnh */
+.section__nav--series {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  background: #151f30; /* Màu nền mặc định */
+  border-radius: 50%; /* Tạo hình tròn */
+  border: none;
+  cursor: pointer;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px; /* Kích thước nút, điều chỉnh nếu cần */
+  height: 40px; /* Kích thước nút, điều chỉnh nếu cần */
+}
+
+/* Nút Previous */
+.section__nav--prev {
+  left: -80px; /* Điều chỉnh khoảng cách từ lề trái */
+}
+
+/* Nút Next */
+.section__nav--next {
+  right: -30px; /* Điều chỉnh khoảng cách từ lề phải */
+}
+
+/* Tùy chỉnh màu SVG */
+.section__nav--series svg path {
+  stroke: #ffffff; /* Màu trắng cho mũi tên mặc định */
+}
+
+/* Hiệu ứng khi hover */
+.section__nav--series:hover {
+  background: #2f80ed; /* Màu nền khi hover */
+}
+
+.section__nav--series:hover svg path {
+  stroke: #ffffff; /* Màu trắng cho mũi tên khi hover */
+}
+
+.comments__title--tabs {
+  display: flex;
+  gap: 32px;
+}
+
+.comments__title--tabs .nav-link {
+  display: flex;
+  align-items: center;
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 2rem;
+  padding: 0;
+  margin: 0;
+  transition: color 0.2s;
+}
+
+.comments__title--tabs .nav-link:not(.active) {
+  color: #888;
+}
+
+.comments__title--tabs .nav-link span {
+  margin-left: 8px;
+  margin-top: 0;
+  background: #2f80ed;
+  color: #fff;
+  border-radius: 8px;
+  padding: 2px 10px;
+  font-size: 1rem;
+  font-weight: 500;
+  min-width: 28px;
+  text-align: center;
+  box-shadow: none;
+  opacity: 1;
+  transition: none;
+}
+
+.comments__title--tabs .nav-link:not(.active) span {
+  background: #294c7c;
+  color: #b0b8c1;
+}
+
+/* Tùy chỉnh màu SVG */
+.section__nav--cards svg path {
+  stroke: #2f80ed;
+}
+
+/* Hiệu ứng khi hover */
+.section__nav--cards:hover {
+  background: #2f80ed;
+}
+
+.section__nav--cards:hover svg path {
+  stroke: #ffffff;
+}
