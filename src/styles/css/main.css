@@ -4854,60 +4854,49 @@ body::-webkit-scrollbar-thumb {
   color: #e0e0e0;
   line-height: 100%;
 }
+
+/* sign_social */
 .sign__social {
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  margin-bottom: 15px;
-  margin-top: 15px;
+  justify-content: center;
+  margin: 15px 0;
 }
-.sign__social a {
+
+.sign__social a.gl {
   display: flex;
-  flex-direction: row;
   justify-content: center;
   align-items: center;
-  height: 44px;
-  width: calc(33% - 10px);
+  height: 50px;
+  width: 318px; /* mặc định 318px */
   border-radius: 16px;
   color: #fff;
-}
-.sign__social a svg {
-  height: auto;
-  fill: #fff;
-  transition: 0.5s;
-}
-.sign__social a.fb {
-  background-color: #3b5999;
-}
-.sign__social a.fb svg {
-  width: 10px;
-}
-.sign__social a.gl {
   background-color: #df4a32;
+  transition: 0.3s;
 }
+
 .sign__social a.gl svg {
   width: 18px;
+  height: auto;
+  fill: #fff;
+  transition: 0.3s;
 }
-.sign__social a.tw {
-  background-color: #1da1f2;
-}
-.sign__social a.tw svg {
-  width: 18px;
-}
-.sign__social a:hover {
+
+.sign__social a.gl:hover {
   background-color: #fff;
 }
-.sign__social a:hover.fb svg {
-  fill: #3b5999;
-}
-.sign__social a:hover.gl svg {
+
+.sign__social a.gl:hover svg {
   fill: #df4a32;
 }
-.sign__social a:hover.tw svg {
-  fill: #1da1f2;
+
+/* Mobile / Tablet: giống sign__btn */
+@media (max-width: 991px) {
+  .sign__social a.gl {
+    width: 328.4px;     /* full width */
+  }
 }
+
+/* sign_social */
 .sign__wrap {
   background-color: #151f30;
   padding: 20px;
@@ -5000,6 +4989,7 @@ body::-webkit-scrollbar-thumb {
   .sign__form--profile .sign__btn {
     margin: 10px 0 15px;
   }
+
   .sign__form--first {
     margin-top: 0;
   }
