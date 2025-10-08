@@ -24,3 +24,12 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* Global placeholder color */
+input::placeholder,
+textarea::placeholder {
+  color: #9ca3af; /* Tailwind gray-400 */
+  opacity: 1; /* Ensure full visibility */
+}
+
+
