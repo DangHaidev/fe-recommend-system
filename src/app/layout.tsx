@@ -27,15 +27,15 @@ export default function RootLayout({
           {children}
         </main>
         <Footer />
-        <Script src="/js/jquery-3.5.1.min.js" strategy="lazyOnload" />
-        <Script src="/js/bootstrap.bundle.min.js" strategy="lazyOnload" />
-        <Script src="/js/owl.carousel.min.js" strategy="lazyOnload" />
-        <Script src="/js/slider-radio.js" strategy="lazyOnload" />
-        <Script src="/js/select2.min.js" strategy="lazyOnload" />
-        <Script src="/js/smooth-scrollbar.js" strategy="lazyOnload" />
-        <Script src="/js/jquery.magnific-popup.min.js" strategy="lazyOnload" />
-        {/* <Script src="/js/plyr.min.js" strategy="lazyOnload" /> */}
-        <Script src="/js/bootstrap.bundle.min.js" strategy="lazyOnload" />
+        <Script src="/js/jquery-3.5.1.min.js" strategy="beforeInteractive" />
+        <Script src="/js/bootstrap.bundle.min.js" strategy="afterInteractive" />
+        <Script src="/js/owl.carousel.min.js" strategy="afterInteractive" />
+        <Script src="/js/slider-radio.js" strategy="afterInteractive" />
+        <Script src="/js/select2.min.js" strategy="afterInteractive" />
+        <Script src="/js/smooth-scrollbar.js" strategy="afterInteractive" />
+        <Script src="/js/jquery.magnific-popup.min.js" strategy="afterInteractive" />
+        <Script src="/js/plyr.min.js" strategy="afterInteractive" />
+        <Script src="/js/main.js" strategy="afterInteractive" />
       </body>
     </html>
   );
