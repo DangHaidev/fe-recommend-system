@@ -3,7 +3,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import { auth } from "@/src/js/firebaseConfig";
+import { auth } from "@/public/js/firebaseConfig";
+
 import {
   signInWithEmailAndPassword,
   GoogleAuthProvider,
@@ -13,6 +14,9 @@ import {
   User,
 } from "firebase/auth";
 import { FirebaseError } from "firebase/app";
+import { signIn } from "next-auth/react";
+import { authenticate } from "@/src/utils/actions";
+
 
 export default function SignInPage() {
   const [email, setEmail] = useState("");
@@ -27,7 +31,10 @@ export default function SignInPage() {
 
   const handleEmailSignIn = async () => {
     try {
-      await signInWithEmailAndPassword(auth, email, password);
+      // await signInWithEmailAndPassword(auth, email, password);
+      // console.log(">>> ",email,password)
+      // const data = await signIn("credentials", { email,password, redirect: false })
+      const res = await authenticate(email,password)
       setError("");
     } catch (err: unknown) {
       if (err instanceof FirebaseError) {
