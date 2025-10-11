@@ -16,6 +16,7 @@ import {
 import { FirebaseError } from "firebase/app";
 import { signIn } from "next-auth/react";
 import { authenticate } from "@/src/utils/actions";
+import { useRouter } from "next/navigation";
 
 
 export default function SignInPage() {
@@ -23,6 +24,7 @@ export default function SignInPage() {
   const [password, setPassword] = useState("");
   const [user, setUser] = useState<User | null>(null);
   const [error, setError] = useState("");
+  const router = useRouter();
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (u) => setUser(u));
@@ -35,7 +37,20 @@ export default function SignInPage() {
       // console.log(">>> ",email,password)
       // const data = await signIn("credentials", { email,password, redirect: false })
       const res = await authenticate(email,password)
-      setError("");
+
+      if(res?.error)
+      {
+        setError("Error login!");
+        if(res?.code === 2)
+        {
+        router.push('/verify');
+
+        }
+      } else
+      {
+        // redirict to another pages
+        router.push('/home');
+      }
     } catch (err: unknown) {
       if (err instanceof FirebaseError) {
         setError(err.message);
