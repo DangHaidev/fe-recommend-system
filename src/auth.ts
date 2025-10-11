@@ -24,10 +24,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             }
           }
         )
-        console.log(">>> check user res: ", res)
         //401 sai mail/pass
         // 406 tài khoản chưa active
-        if(!res.statusCode){
+        if(res.statusCode === 201){
         console.log(">>> check user res 123: ", res)
           // return {
           //   id = res.data?.user?.id,
