@@ -1,8 +1,10 @@
 import React from 'react';
 import Home from './(main)/home/page';
-import { signIn } from '../auth';
+import { auth, signIn } from '../auth';
 
-const HomePage = () => {
+const HomePage = async () => {
+     const session = await auth()
+     console.log(">>>> session", session)
     return (
         <main>
             <Home />

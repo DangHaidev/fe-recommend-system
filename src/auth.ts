@@ -28,13 +28,13 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         // 406 tài khoản chưa active
         if(res.statusCode === 201){
         console.log(">>> check user res 123: ", res)
-          // return {
-          //   id = res.data?.user?.id,
-          //   email= res.data?.user?.email,
-          //  name= res.data?.user?.name,
-          //  access_token= res.data?.access_token
-          // }
-          return res.data;
+          return {
+            id : res.data?.user?.id,
+            email: res.data?.user?.email,
+           name: res.data?.user?.name,
+           access_token : res.data?.access_token
+          }
+          // return res.data;
         }
         else if(+res.statusCode === 401)
         {
@@ -56,7 +56,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
    callbacks: {
     jwt({ token, user }) {
       if (user) { // User is available during sign-in
-        token.id = user as IUser
+        token.user = (user as IUser)
       }
       return token
     },
