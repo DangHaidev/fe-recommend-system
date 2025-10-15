@@ -2,76 +2,43 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { useState, useEffect, FormEvent } from 'react';
-import { auth } from '@/public/js/firebaseConfig';
-
-import {
-    signInWithEmailAndPassword,
-    GoogleAuthProvider,
-    signInWithPopup,
-    onAuthStateChanged,
-    signOut,
-    User,
-} from 'firebase/auth';
+import { useState, FormEvent } from 'react';
 import { useRouter } from 'next/navigation';
 import { sendRequest } from '@/src/utils/api';
 
 export default function Register() {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [user, setUser] = useState<User | null>(null);
     const [error, setError] = useState('');
     const router = useRouter();
-
-    useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, (u) => setUser(u));
-        return () => unsubscribe();
-    }, []);
-
     const handleEmailSignIn = () => {};
 
-    const onFinish = async (values: any) => {
-        const { email, password, name } = values;
-        console.log(values);
-        const res = await sendRequest<IBackendRes<any>>({
-            // url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/register`,
-            url: `http://localhost:8080/auth/register`,
-            method: 'POST',
-            body: {
-                email,
-                password,
-                name,
-            },
-        });
-        if (res?.data) {
-            router.push(`/verify/${res?.data?._id}`);
-        } else {
-            // Notification.name({
-            //     message: "Register error",
-            //     description: res?.message
-            // })
-        }
-    };
     async function onSubmit(event: FormEvent<HTMLFormElement>) {
         event.preventDefault();
 
+        // const formData = new FormData(event.currentTarget);
+        // console.log(formData);
+
         const formData = new FormData(event.currentTarget);
-        console.log(formData);
+        const formObj: Record<string, string> = {};
+
+        // Chuyển FormData thành đối tượng JSON
+        formData.forEach((value, key) => {
+            formObj[key] = value as string;
+        });
+        console.log(formObj);
+
         const res = await sendRequest<IBackendRes<any>>({
             // url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/register`,
             url: 'http://127.0.0.1:8080/auth/register',
             method: 'POST',
-            body: formData,
+            body: formObj,
         });
 
+        console.log(res);
         // Handle response if necessary
         if (res?.data) {
-            router.push(`/verify/${res?.data?._id}`);
+            router.push(`/verify/${res?.data?.id}`);
         } else {
-            // Notification.name({
-            //     message: "Register error",
-            //     description: res?.message
-            // })
+            setError('Lỗi đăng ký');
         }
         // ...
     }
