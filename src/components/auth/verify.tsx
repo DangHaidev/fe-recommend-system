@@ -21,7 +21,6 @@ const Verify = (props: any) => {
         console.log(formObj);
         const res = await sendRequest<IBackendRes<any>>({
             url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/check-code`,
-            // url: 'http://127.0.0.1:8080/auth/register',
             method: 'POST',
             body: formObj,
         });
@@ -29,7 +28,7 @@ const Verify = (props: any) => {
         console.log('check res >>>', res);
         // Handle response if necessary
         if (res?.data) {
-            router.push(`/login`);
+            router.push(`/signin`);
         } else {
             setError('Lỗi code đăng ký');
         }
@@ -64,6 +63,7 @@ const Verify = (props: any) => {
                                         placeholder="id"
                                         name="id"
                                         value={id}
+                                        readOnly
                                     />
                                 </div>
                                 <div className="sign__group">
