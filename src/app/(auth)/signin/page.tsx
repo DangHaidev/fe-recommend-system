@@ -1,156 +1,171 @@
-"use client";
+'use client';
 
-import Image from "next/image";
-import Link from "next/link";
-import { useState, useEffect } from "react";
-import { auth } from "@/public/js/firebaseConfig";
+import Image from 'next/image';
+import Link from 'next/link';
+import { useState, useEffect } from 'react';
+import { auth } from '@/public/js/firebaseConfig';
 
 import {
-  signInWithEmailAndPassword,
-  GoogleAuthProvider,
-  signInWithPopup,
-  onAuthStateChanged,
-  signOut,
-  User,
-} from "firebase/auth";
-import { FirebaseError } from "firebase/app";
-import { signIn } from "next-auth/react";
-import { authenticate } from "@/src/utils/actions";
-import { useRouter } from "next/navigation";
-
+    signInWithEmailAndPassword,
+    GoogleAuthProvider,
+    signInWithPopup,
+    onAuthStateChanged,
+    signOut,
+    User,
+} from 'firebase/auth';
+import { FirebaseError } from 'firebase/app';
+import { signIn } from 'next-auth/react';
+import { authenticate } from '@/src/utils/actions';
+import { useRouter } from 'next/navigation';
+import ModalReactive from '@/src/components/auth/modal.reactive';
 
 export default function SignInPage() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [user, setUser] = useState<User | null>(null);
-  const [error, setError] = useState("");
-  const router = useRouter();
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [user, setUser] = useState<User | null>(null);
+    const [error, setError] = useState('');
+    const router = useRouter();
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (u) => setUser(u));
-    return () => unsubscribe();
-  }, []);
+    useEffect(() => {
+        const unsubscribe = onAuthStateChanged(auth, (u) => setUser(u));
+        return () => unsubscribe();
+    }, []);
 
-  const handleEmailSignIn = async () => {
-    try {
-      // await signInWithEmailAndPassword(auth, email, password);
-      // console.log(">>> ",email,password)
-      // const data = await signIn("credentials", { email,password, redirect: false })
-      const res = await authenticate(email,password)
+    const handleEmailSignIn = async () => {
+        try {
+            // await signInWithEmailAndPassword(auth, email, password);
+            // console.log(">>> ",email,password)
+            // const data = await signIn("credentials", { email,password, redirect: false })
+            const res = await authenticate(email, password);
 
-      if(res?.error)
-      {
-        setError("Error login!");
-        if(res?.code === 2)
-        {
-        router.push('/verify');
-
+            if (res?.error) {
+                setError('Error login!');
+                if (res?.code === 2) {
+                    setIsModalOpen(true);
+                    // router.push('/verify');
+                    return;
+                }
+            } else {
+                // redirict to another pages
+                router.push('/home');
+            }
+        } catch (err: unknown) {
+            if (err instanceof FirebaseError) {
+                setError(err.message);
+            } else {
+                setError('Đã có lỗi xảy ra');
+            }
         }
-      } else
-      {
-        // redirict to another pages
-        router.push('/home');
-      }
-    } catch (err: unknown) {
-      if (err instanceof FirebaseError) {
-        setError(err.message);
-      } else {
-        setError("Đã có lỗi xảy ra");
-      }
-    }
-  };
+    };
 
-  const handleGoogleSignIn = async () => {
-    try {
-      const provider = new GoogleAuthProvider();
-      await signInWithPopup(auth, provider);
-      setError("");
-    } catch (err: unknown) {
-      if (err instanceof FirebaseError) {
-        setError(err.message);
-      } else {
-        setError("Đã có lỗi xảy ra");
-      }
-    }
-  };
+    const handleGoogleSignIn = async () => {
+        try {
+            const provider = new GoogleAuthProvider();
+            await signInWithPopup(auth, provider);
+            setError('');
+        } catch (err: unknown) {
+            if (err instanceof FirebaseError) {
+                setError(err.message);
+            } else {
+                setError('Đã có lỗi xảy ra');
+            }
+        }
+    };
 
-  const handleSignOut = async () => {
-    await signOut(auth);
-  };
+    const handleSignOut = async () => {
+        await signOut(auth);
+    };
 
-  return (
-    <div className="sign section--full-bg" data-bg="/img/bg.jpg">
-      <div className="container">
-        <div className="row">
-          <div className="col-12">
-            <div className="sign__content">
-              {user ? (
-                <div className="text-center">
-                  <p>Xin chào, {user.email || user.displayName}</p>
-                  <button className="sign__btn" onClick={handleSignOut}>
-                    Đăng xuất
-                  </button>
-                </div>
-              ) : (
-                <form
-                  className="sign__form"
-                  onSubmit={(e) => {
-                    e.preventDefault();
-                    handleEmailSignIn();
-                  }}
-                >
-                  <Link href="/" className="sign__logo">
-                    <Image
-                      src="/img/logo.svg"
-                      alt="Logo"
-                      width={120}
-                      height={40}
-                    />
-                  </Link>
+    return (
+        <div className="sign section--full-bg" data-bg="/img/bg.jpg">
+            <div className="container">
+                <div className="row">
+                    <div className="col-12">
+                        <div className="sign__content">
+                            {user ? (
+                                <div className="text-center">
+                                    <p>
+                                        Xin chào,{' '}
+                                        {user.email || user.displayName}
+                                    </p>
+                                    <button
+                                        className="sign__btn"
+                                        onClick={handleSignOut}
+                                    >
+                                        Đăng xuất
+                                    </button>
+                                </div>
+                            ) : (
+                                <form
+                                    className="sign__form"
+                                    onSubmit={(e) => {
+                                        e.preventDefault();
+                                        handleEmailSignIn();
+                                    }}
+                                >
+                                    <Link href="/" className="sign__logo">
+                                        <Image
+                                            src="/img/logo.svg"
+                                            alt="Logo"
+                                            width={120}
+                                            height={40}
+                                        />
+                                    </Link>
 
-                  <div className="sign__group">
-                    <input
-                      type="text"
-                      className="sign__input"
-                      placeholder="Email"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      required
-                    />
-                  </div>
+                                    <div className="sign__group">
+                                        <input
+                                            type="text"
+                                            className="sign__input"
+                                            placeholder="Email"
+                                            value={email}
+                                            onChange={(e) =>
+                                                setEmail(e.target.value)
+                                            }
+                                            required
+                                        />
+                                    </div>
 
-                  <div className="sign__group">
-                    <input
-                      type="password"
-                      className="sign__input"
-                      placeholder="Password"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      required
-                    />
-                  </div>
+                                    <div className="sign__group">
+                                        <input
+                                            type="password"
+                                            className="sign__input"
+                                            placeholder="Password"
+                                            value={password}
+                                            onChange={(e) =>
+                                                setPassword(e.target.value)
+                                            }
+                                            required
+                                        />
+                                    </div>
 
-                  <div className="sign__group sign__group--checkbox">
-                    <input
-                      id="remember"
-                      name="remember"
-                      type="checkbox"
-                      defaultChecked
-                    />
-                    <label htmlFor="remember">Remember Me</label>
-                  </div>
+                                    <div className="sign__group sign__group--checkbox">
+                                        <input
+                                            id="remember"
+                                            name="remember"
+                                            type="checkbox"
+                                            defaultChecked
+                                        />
+                                        <label htmlFor="remember">
+                                            Remember Me
+                                        </label>
+                                    </div>
 
-                  <button className="sign__btn" type="submit">
-                    Sign in
-                  </button>
+                                    <button className="sign__btn" type="submit">
+                                        Sign in
+                                    </button>
 
-                  {error && <p className="text-red-500 mt-2">{error}</p>}
+                                    {error && (
+                                        <p className="text-red-500 mt-2">
+                                            {error}
+                                        </p>
+                                    )}
 
-                  <span className="sign__delimiter">or</span>
+                                    <span className="sign__delimiter">or</span>
 
-                  <div className="sign__social">
-                    {/* Facebook */}
-                    {/* <a className="fb" href="#">
+                                    <div className="sign__social">
+                                        {/* Facebook */}
+                                        {/* <a className="fb" href="#">
                       <svg
                         viewBox="0 0 9 17"
                         fill="none"
@@ -160,8 +175,8 @@ export default function SignInPage() {
                       </svg>
                     </a> */}
 
-                    {/* Twitter */}
-                    {/* <a className="tw" href="#">
+                                        {/* Twitter */}
+                                        {/* <a className="tw" href="#">
                       <svg
                         viewBox="0 0 16 12"
                         fill="none"
@@ -171,39 +186,46 @@ export default function SignInPage() {
                       </svg>
                     </a> */}
 
-                    {/* Google */}
-                    <a
-                      className="gl"
-                      href="#"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        handleGoogleSignIn();
-                      }}
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="ionicon"
-                        viewBox="0 0 512 512"
-                      >
-                        <path d="M473.16 221.48l-2.26-9.59H262.46v88.22H387c-12.93 61.4-72.93 93.72-121.94 93.72-35.66 0-73.25-15-98.13-39.11a140.08 140.08 0 01-41.8-98.88c0-37.16 16.7-74.33 41-98.78s61-38.13 97.49-38.13c41.79 0 71.74 22.19 82.94 32.31l62.69-62.36C390.86 72.72 340.34 32 261.6 32c-60.75 0-119 23.27-161.58 65.71C58 139.5 36.25 199.93 36.25 256s20.58 113.48 61.3 155.6c43.51 44.92 105.13 68.4 168.58 68.4 57.73 0 112.45-22.62 151.45-63.66 38.34-40.4 58.17-96.3 58.17-154.9 0-24.67-2.48-39.32-2.59-39.96z" />
-                      </svg>
-                    </a>
-                  </div>
+                                        {/* Google */}
+                                        <a
+                                            className="gl"
+                                            href="#"
+                                            onClick={(e) => {
+                                                e.preventDefault();
+                                                handleGoogleSignIn();
+                                            }}
+                                        >
+                                            <svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                className="ionicon"
+                                                viewBox="0 0 512 512"
+                                            >
+                                                <path d="M473.16 221.48l-2.26-9.59H262.46v88.22H387c-12.93 61.4-72.93 93.72-121.94 93.72-35.66 0-73.25-15-98.13-39.11a140.08 140.08 0 01-41.8-98.88c0-37.16 16.7-74.33 41-98.78s61-38.13 97.49-38.13c41.79 0 71.74 22.19 82.94 32.31l62.69-62.36C390.86 72.72 340.34 32 261.6 32c-60.75 0-119 23.27-161.58 65.71C58 139.5 36.25 199.93 36.25 256s20.58 113.48 61.3 155.6c43.51 44.92 105.13 68.4 168.58 68.4 57.73 0 112.45-22.62 151.45-63.66 38.34-40.4 58.17-96.3 58.17-154.9 0-24.67-2.48-39.32-2.59-39.96z" />
+                                            </svg>
+                                        </a>
+                                    </div>
 
-                  <span className="sign__text">
-                    Don&apos;t have an account?{" "}
-                    <Link href="/signup">Sign up!</Link>
-                  </span>
+                                    <span className="sign__text">
+                                        Don&apos;t have an account?{' '}
+                                        <Link href="/signup">Sign up!</Link>
+                                    </span>
 
-                  <span className="sign__text">
-                    <Link href="/forgot">Forgot password?</Link>
-                  </span>
-                </form>
-              )}
+                                    <span className="sign__text">
+                                        <Link href="/forgot">
+                                            Forgot password?
+                                        </Link>
+                                    </span>
+                                </form>
+                            )}
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
+            <ModalReactive
+                isModalOpen={isModalOpen}
+                setIsModalOpen={setIsModalOpen}
+                userEmail={email}
+            />
         </div>
-      </div>
-    </div>
-  );
+    );
 }
