@@ -29,7 +29,7 @@ const ModalReactive = (props: any) => {
     const onFinishStep0 = async (values: any) => {
         const { email } = values;
         const res = await sendRequest<IBackendRes<any>>({
-            url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/auth/retry-active`,
+            url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/retry-active`,
             method: 'POST',
             body: {
                 email,
@@ -37,7 +37,7 @@ const ModalReactive = (props: any) => {
         });
 
         if (res?.data) {
-            setUserId(res?.data?._id);
+            setUserId(res?.data?.id);
             setCurrent(1);
         } else {
             notification.error({
@@ -50,11 +50,11 @@ const ModalReactive = (props: any) => {
     const onFinishStep1 = async (values: any) => {
         const { code } = values;
         const res = await sendRequest<IBackendRes<any>>({
-            url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/auth/check-code`,
+            url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/check-code`,
             method: 'POST',
             body: {
                 code,
-                _id: userId,
+                id: userId,
             },
         });
 
