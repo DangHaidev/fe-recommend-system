@@ -31,15 +31,6 @@ export default function DetailPage() {
         For now, we are including the original scripts to maintain functionality,
         but this is not an ideal or performant solution.
       */}
-      <Script src="/js/jquery-3.5.1.min.js" strategy="lazyOnload" />
-      <Script src="/js/bootstrap.bundle.min.js" strategy="lazyOnload" />
-      <Script src="/js/owl.carousel.min.js" strategy="lazyOnload" />
-      <Script src="/js/slider-radio.js" strategy="lazyOnload" />
-      <Script src="/js/select2.min.js" strategy="lazyOnload" />
-      <Script src="/js/smooth-scrollbar.js" strategy="lazyOnload" />
-      <Script src="/js/jquery.magnific-popup.min.js" strategy="lazyOnload" />
-      <Script src="/js/plyr.min.js" strategy="lazyOnload" />
-      <Script src="/js/main.js" strategy="lazyOnload" />
     </>
   );
 }
