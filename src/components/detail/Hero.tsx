@@ -12,12 +12,13 @@ interface MovieProps {
         rating: number;
         genres: string[];
         runtime: number;
+        trailer: string;
     };
 }
 
 export default function Hero({ movie }: MovieProps) {
     const [showTrailer, setShowTrailer] = useState(false);
-
+    console.log('>>> movie', movie);
     return (
         <section
             className="section section--head section--head-fixed section--gradient section--details-bg"
@@ -120,13 +121,23 @@ export default function Hero({ movie }: MovieProps) {
                                         <iframe
                                             width="100%"
                                             height="100%"
-                                            src="https://www.youtube.com/embed/0O2aH4XLbto?autoplay=1"
+                                            src="https://www.youtube.com/embed/EPaoHkV0dYw?si=WC2cyU5YdtbHUV0G"
                                             title="Trailer"
                                             frameBorder="0"
                                             allow="autoplay; encrypted-media"
                                             allowFullScreen
                                             style={{ borderRadius: 8 }}
                                         />
+                                        {/* <iframe
+                                            width="560"
+                                            height="315"
+                                            src="https://www.youtube.com/embed/EPaoHkV0dYw?si=WC2cyU5YdtbHUV0G"
+                                            title="YouTube video player"
+                                            frameborder="0"
+                                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                            referrerpolicy="strict-origin-when-cross-origin"
+                                            allowfullscreen
+                                        ></iframe> */}
                                     </div>
                                 </div>
                             )}
@@ -154,7 +165,7 @@ export default function Hero({ movie }: MovieProps) {
                             {/* end article content */}
                         </div>
 
-                        <MediaPlayer />
+                        <MediaPlayer trailerUrl={movie.trailer} />
                         <SeriesCarousel />
 
                         <div className="col-12 col-xl-8">
