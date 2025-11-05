@@ -1,11 +1,11 @@
 'use client';
 
 import { useState } from 'react';
-import ProfileHeader from '../../components/profile/ProfileHeader';
-import ProfileTabs from '../../components/profile/ProfileTabs';
-import ProfileStats from '../../components/profile/ProfileStats';
-import FavoritesGrid from '../../components/profile/FavoritesGrid';
-import ProfileSettings from '../../components/profile/ProfileSettings';
+import ProfileHeader from '@/src/components/profile/ProfileHeader';
+import ProfileTabs from '@/src/components/profile/ProfileTabs';
+import ProfileStats from '@/src/components/profile/ProfileStats';
+import FavoritesGrid from '@/src/components/profile/FavoritesGrid';
+import ProfileSettings from '@/src/components/profile/ProfileSettings';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 
@@ -282,3 +282,4 @@ export default function ProfilePage() {
         </div>
     );
 }
+
