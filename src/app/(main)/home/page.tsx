@@ -1,5 +1,3 @@
-"use client";
-
 import HeroCarousel from "@/src/components/home/HeroCarousel";
 import CatalogSection from "@/src/components/home/CatalogSection";
 import SubscriptionsSection from "@/src/components/home/SubscriptionsSection";
@@ -23,6 +21,8 @@ export default function HomePage() {
 
       {/* FlixTV Originals Section */}
       <InterviewsSection />
+       {/* popular section */}
+      <Popular />
     </>
   );
 }
