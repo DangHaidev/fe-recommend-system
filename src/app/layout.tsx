@@ -22,11 +22,11 @@ export default function RootLayout({
     return (
         <html lang="en">
             <body className={inter.className}>
-                <Header />
+                {/* <Header /> */}
                 <main>
                     <NextAuthWrapper>{children}</NextAuthWrapper>
                 </main>
-                <Footer />
+                {/* <Footer /> */}
                 <Script
                     src="/js/jquery-3.5.1.min.js"
                     strategy="beforeInteractive"
