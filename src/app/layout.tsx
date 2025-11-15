@@ -51,6 +51,7 @@ export default function RootLayout({
                 />
                 <Script src="/js/plyr.min.js" strategy="afterInteractive" />
                 <Script src="/js/main.js" strategy="afterInteractive" />
+                <Script src="/js/admin.js" strategy="afterInteractive" />               
             </body>
         </html>
     );

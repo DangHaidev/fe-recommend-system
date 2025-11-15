@@ -427,8 +427,8 @@ body::-webkit-scrollbar-thumb {
   background-color: rgba(47,128,237,0.1);
 }
 .sidebar__menu li {
-  padding: 0 0 0 49px;
-  margin-bottom: 15px;
+  padding: 0 0 0 50px;
+  margin-bottom: 5px;
   position: relative;
 }
 .sidebar__menu li:before {
@@ -445,13 +445,13 @@ body::-webkit-scrollbar-thumb {
 }
 .sidebar__menu li:last-child {
   margin-bottom: 0;
-  padding-bottom: 20px;
+  padding-bottom: 10px;
 }
 .sidebar__menu li:last-child:before {
   top: calc(50% - 10px);
 }
 .sidebar__menu li:first-child {
-  padding-top: 20px;
+  padding-top: 10px;
 }
 .sidebar__menu li:first-child:before {
   top: calc(50% + 10px);
@@ -1705,7 +1705,7 @@ body::-webkit-scrollbar-thumb {
     flex-direction: row;
     justify-content: flex-start;
     align-items: center;
-    padding: 0 20px;
+    padding: 0;
     height: 80px;
   }
   .profile__user {
