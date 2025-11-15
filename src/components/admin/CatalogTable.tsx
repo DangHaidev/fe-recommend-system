@@ -74,6 +74,24 @@ export default function CatalogTable() {
           ))}
         </tbody>
       </table>
+      <div id="modal-status" className="zoom-anim-dialog mfp-hide modal">
+        <h6 className="modal__title">Status change</h6>
+        <p className="modal__text">Are you sure about immediately change status?</p>
+        <div className="modal__btns">
+          <button className="modal__btn modal__btn--apply" type="button">Apply</button>
+          <button className="modal__btn modal__btn--dismiss" type="button">Dismiss</button>
+        </div>
+      </div>
+
+      <div id="modal-delete" className="zoom-anim-dialog mfp-hide modal">
+        <h6 className="modal__title">Delete item</h6>
+        <p className="modal__text">Are you sure you want to delete this item?</p>
+        <div className="modal__btns">
+          <button className="modal__btn modal__btn--delete" type="button">Delete</button>
+          <button className="modal__btn modal__btn--dismiss" type="button">Dismiss</button>
+        </div>
+      </div>
     </div>
+    
   );
 }
