@@ -15,7 +15,6 @@ const catalogData: CatalogItem[] = [
   { id: 23, title: "I Dream in Another Language", rating: 7.9, category: "Movie", views: 1392, status: "Visible", date: "24 Oct 2021" },
   { id: 24, title: "Benched", rating: 7.1, category: "Movie", views: 1093, status: "Hidden", date: "24 Oct 2021" },
   { id: 25, title: "Whitney", rating: 6.3, category: "TV Show", views: 723, status: "Visible", date: "24 Oct 2021" },
-  // ... thêm data nếu cần
 ];
 
 export default function CatalogTable() {

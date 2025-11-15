@@ -14,13 +14,6 @@ export default function AdminLayout({
       <Header />
       <Sidebar />
       <main className="main">{children}</main>
-
-      <Script src="/js/jquery-3.5.1.min.js" strategy="beforeInteractive" />
-      <Script src="/js/bootstrap.bundle.min.js" strategy="beforeInteractive"/>
-      <Script src="/js/jquery.magnific-popup.min.js" strategy="afterInteractive"/>
-      <Script src="/js/smooth-scrollbar.js" strategy="afterInteractive" />
-      <Script src="/js/select2.min.js" strategy="afterInteractive" />
-      <Script src="/js/admin.js" strategy="afterInteractive"/> 
     </>
   );
 }
