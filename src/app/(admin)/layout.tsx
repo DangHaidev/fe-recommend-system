@@ -1,8 +1,16 @@
 // src/app/admin/layout.tsx
-import Script from "next/script";
 import Sidebar from "@/src/components/admin/Sidebar";
 import Header from "@/src/components/admin/Header";
-import '../../styles/admin.css'; 
+	// <link rel="stylesheet" href="css/bootstrap-reboot.min.css">
+	// <link rel="stylesheet" href="css/bootstrap-grid.min.css">
+	// <link rel="stylesheet" href="css/magnific-popup.css">
+	// <link rel="stylesheet" href="css/select2.min.css">
+	// <link rel="stylesheet" href="css/admin.css"></link>
+import '../../styles/bootstrap-reboot.min.css';
+import '../../styles/bootstrap-grid.min.css';
+import '../../styles/magnific-popup.css';
+import '../../styles/select2.min.css';
+import '../../styles/admin.css';
 
 export default function AdminLayout({
   children,
@@ -13,7 +21,7 @@ export default function AdminLayout({
     <>
       <Header />
       <Sidebar />
-      <main className="main">{children}</main>
+      {children}
     </>
   );
 }

@@ -1,19 +1,19 @@
-// app/admin/users/page.tsx
-import UsersTable from "@/src/components/admin/UsersTable";
+// src/app/admin/comments/page.tsx
+import CommentsTable from "@/src/components/admin/CommentsTable";
 
-export default function UsersPage() {
+export default function CommentsPage() {
   return (
-    <main className="main">               {/* THÊM DÒNG NÀY LÀ ĐẸP NGAY! */}
+    <main className="main">
       <div className="container-fluid">
         <div className="row">
-
-          {/* Title + Sort + Search */}
+          {/* Main Title */}
           <div className="col-12">
             <div className="main__title">
-              <h2>Users</h2>
-              <span className="main__title-stat">3 702 total</span>
+              <h2>Comments</h2>
+              <span className="main__title-stat">21 356 total</span>
 
               <div className="main__title-wrap">
+                {/* Sort */}
                 <div className="filter" id="filter__sort">
                   <span className="filter__item-label">Sort by:</span>
                   <div className="filter__item-btn dropdown-toggle" role="button">
@@ -22,13 +22,13 @@ export default function UsersPage() {
                   </div>
                   <ul className="filter__item-menu dropdown-menu scrollbar-dropdown">
                     <li>Date created</li>
-                    <li>Pricing plan</li>
-                    <li>Status</li>
+                    <li>Rating</li>
                   </ul>
                 </div>
 
+                {/* Search */}
                 <form action="#" className="main__title-form">
-                  <input type="text" placeholder="Find user.." />
+                  <input type="text" placeholder="Key word.." />
                   <button type="button">
                     <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <circle cx="8.25998" cy="8.25995" r="7.48191" stroke="#2F80ED" strokeWidth="1.5"/>
@@ -40,26 +40,25 @@ export default function UsersPage() {
             </div>
           </div>
 
-          {/* Table */}
+          {/* Comments Table */}
           <div className="col-12">
-            <UsersTable />
+            <CommentsTable />
           </div>
 
           {/* Paginator */}
           <div className="col-12">
             <div className="paginator">
-              <span className="paginator__pages">10 from 3 702</span>
+              <span className="paginator__pages">10 from 21 356</span>
               <ul className="paginator__paginator">
-                <li><a href="#">«</a></li>
+                <li><a href="#">Previous</a></li>
                 <li className="active"><a href="#">1</a></li>
                 <li><a href="#">2</a></li>
                 <li><a href="#">3</a></li>
                 <li><a href="#">4</a></li>
-                <li><a href="#">»</a></li>
+                <li><a href="#">Next</a></li>
               </ul>
             </div>
           </div>
-
         </div>
       </div>
     </main>

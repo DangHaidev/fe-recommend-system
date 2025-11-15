@@ -259,7 +259,6 @@ body::-webkit-scrollbar-thumb {
 	Sidebar
 ==============================*/
 .sidebar {
-  padding-top: 30px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -489,6 +488,7 @@ body::-webkit-scrollbar-thumb {
 }
 @media (min-width: 1200px) {
   .sidebar {
+    padding-top: 30px;
     transform: translateX(0);
   }
   .sidebar__logo {
@@ -599,6 +599,7 @@ body::-webkit-scrollbar-thumb {
   width: 100%;
   overflow: auto;
 }
+
 .main__table {
   width: 100%;
   min-width: 1050px;
@@ -611,17 +612,22 @@ body::-webkit-scrollbar-thumb {
   font-size: 12px;
   color: #e0e0e0;
   font-weight: 400;
-  padding: 0 20px 0 20px;
+  padding:  0;
   line-height: 100%;
   margin-bottom: 0;
+  padding-left: 15px;
   border: none;
+}
+.main__table tbody td .main__table-text{
+  padding: 20px;
 }
 .main__table tbody tr {
   border-bottom: 10px solid #131720;
 }
 .main__table tbody td {
   padding: 0;
-  background-color: transparent;
+  background-color: #151f30;
+  border-radius: 16px;
   border: 0px solid transparent;
 }
 .main__table tbody td:first-child .main__table-text {
@@ -824,7 +830,7 @@ body::-webkit-scrollbar-thumb {
 }
 @media (min-width: 1200px) {
   .main {
-    padding: 0 15px 30px 10%;
+    padding: 0 15px 30px 295px;
     margin-top: 0;
   }
   .main__title {
@@ -842,7 +848,6 @@ body::-webkit-scrollbar-thumb {
   align-items: flex-start;
   position: relative;
   margin-bottom: 20px;
-  margin-top: 0 !important;
   padding: 20px;
   border-radius: 16px;
   background-color: #151f30;

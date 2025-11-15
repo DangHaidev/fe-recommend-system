@@ -1,26 +1,14 @@
 // components/admin/users/UsersTable.tsx
 import Link from "next/link";
 
-type User = {
-  id: number;
-  name: string;
-  email: string;
-  username: string;
-  plan: string;
-  comments: number;
-  reviews: number;
-  status: "Approved" | "Banned";
-  date: string;
-};
-
-const usersData: User[] = [
+const usersData = [
   { id: 23, name: "Alexander Smith", email: "alex.smith@email.com", username: "alexsmith", plan: "Premium", comments: 13, reviews: 1, status: "Approved", date: "24 Oct 2021" },
   { id: 24, name: "Jessica Brown", email: "jessica.b@email.com", username: "jessbrown", plan: "Free", comments: 1, reviews: 15, status: "Approved", date: "24 Oct 2021" },
   { id: 25, name: "Michael Chen", email: "mchen@email.com", username: "mikechen88", plan: "Premium", comments: 6, reviews: 6, status: "Approved", date: "24 Oct 2021" },
   { id: 26, name: "Sarah Johnson", email: "sarahj@email.com", username: "sarah_j", plan: "Free", comments: 11, reviews: 15, status: "Banned", date: "24 Oct 2021" },
   { id: 27, name: "David Wilson", email: "david.w@email.com", username: "davidw92", plan: "Basic", comments: 0, reviews: 0, status: "Approved", date: "24 Oct 2021" },
   { id: 28, name: "Emma Davis", email: "emma.d@email.com", username: "emmadavis", plan: "Cinematic", comments: 65, reviews: 8, status: "Approved", date: "23 Oct 2021" },
-];
+] as const;
 
 export default function UsersTable() {
   return (
@@ -39,9 +27,11 @@ export default function UsersTable() {
             <th>ACTIONS</th>
           </tr>
         </thead>
+
         <tbody>
           {usersData.map((user) => (
-            <tr key={user.id}>
+            // PHẢI VIẾT LIỀN 1 DÒNG HOẶC DÙNG {/* */} ĐỂ TRÁNH WHITESPACE
+            <tr key={user.id} className="main__table-tr">
               <td><div className="main__table-text">{user.id}</div></td>
               <td>
                 <div className="main__user">
@@ -73,7 +63,7 @@ export default function UsersTable() {
                   </a>
                   <a href={`/admin/edit-user/${user.id}`} className="main__table-btn main__table-btn--edit">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                      <path d="M22,7.24a1,1,0,0,0-.29-.71L17.47,2.29A1,1,0,0,0,16.76,2a1,1,0,0,0-.71.29L13.22,5.12L2.29,16.05a1,1,0,0,0-.29.71V21a1,1,0,0,0,1,1H7.24A1,1,0,0,0,8,21.71L18.87,10.78L21.71,8A1.19,1.19,0,0,0,22,7.24ZM6.83,20H4V17.17l9.93-9.93,2.83,2.83ZM18.17,8.66,15.34,5.83l1.42-1.41,2.82,2.82Z"/>
+                      <path d="M22,7.24a1,1,0,0,0-.29-.71L17.47,2.29A1,1,0,0,0,16.76,2a1,1,0,0,0-.71.29L13.22,5.12L2.29,16.05a1,1,0,0,0-.29.71V21a1,1,0,0,0,1,1H7.24A1,1,0,0,0,8,21.71L18.87,10.78L21.71,8A1.19,1.19,0,0,0,22,7.24ZM6.83,20H4V17.17l9.93-9.93,2.83,2.83ZM18.17,8.66L15.34,5.83l1.42-1.41,2.82,2.82Z"/>
                     </svg>
                   </a>
                   <a href="#modal-delete" className="main__table-btn main__table-btn--delete open-modal">
@@ -88,7 +78,7 @@ export default function UsersTable() {
         </tbody>
       </table>
 
-      {/* Modal Status */}
+      {/* Modal – giữ nguyên */}
       <div id="modal-status" className="zoom-anim-dialog mfp-hide modal">
         <h6 className="modal__title">Status change</h6>
         <p className="modal__text">Are you sure about immediately change status?</p>
@@ -98,7 +88,6 @@ export default function UsersTable() {
         </div>
       </div>
 
-      {/* Modal Delete */}
       <div id="modal-delete" className="zoom-anim-dialog mfp-hide modal">
         <h6 className="modal__title">User delete</h6>
         <p className="modal__text">Are you sure to permanently delete this user?</p>
