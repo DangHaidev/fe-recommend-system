@@ -1,6 +1,6 @@
-import { StringSchema } from "firebase/ai";
+import { StringSchema } from 'firebase/ai';
 
-export { };
+export {};
 // https://bobbyhadz.com/blog/typescript-make-types-global#declare-global-types-in-typescript
 
 declare global {
@@ -12,6 +12,7 @@ declare global {
         useCredentials?: boolean;
         headers?: any;
         nextOption?: any;
+        accessToken?: string;
     }
 
     interface IBackendRes<T> {
@@ -27,18 +28,17 @@ declare global {
             pageSize: number;
             pages: number;
             total: number;
-        },
-        result: T[]
+        };
+        result: T[];
     }
 
     interface ILogin {
         user: {
-            id: string,
-            email: string,
-            password: string,
-            name: string
-        },
-        access_token: string
+            id: string;
+            email: string;
+            password: string;
+            name: string;
+        };
+        access_token: string;
     }
-
 }
