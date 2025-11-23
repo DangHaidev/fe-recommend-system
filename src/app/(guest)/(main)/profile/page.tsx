@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ProfileHeader from '@/src/components/profile/ProfileHeader';
 import ProfileTabs from '@/src/components/profile/ProfileTabs';
 import ProfileStats from '@/src/components/profile/ProfileStats';
@@ -12,6 +12,19 @@ import Link from 'next/link';
 export default function ProfilePage() {
     const [activeTab, setActiveTab] = useState('profile');
     const { data: session, status, update } = useSession();
+
+    const [isSessionLoaded, setIsSessionLoaded] = useState(false);
+
+    useEffect(() => {
+        if (status === 'authenticated' || status === 'unauthenticated') {
+            setIsSessionLoaded(true);
+        }
+    }, [status]);
+
+    // Nếu session chưa được load thì hiển thị loading hoặc placeholder
+    if (!isSessionLoaded) {
+        return <div>Loading...</div>;
+    }
     console.log('>>>> data ', session, status);
 
     return (
@@ -275,11 +288,15 @@ export default function ProfilePage() {
                         </div>
                     )}
 
-                    {activeTab === 'favorites' && <FavoritesGrid />}
+                    {activeTab === 'favorites' && (
+                        <FavoritesGrid
+                            userId={session?.user.id}
+                            access_token={session?.user.access_token}
+                        />
+                    )}
                     {activeTab === 'settings' && <ProfileSettings />}
                 </div>
             </div>
         </div>
     );
 }
-

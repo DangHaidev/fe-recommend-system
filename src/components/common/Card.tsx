@@ -1,7 +1,7 @@
 import React from 'react';
 
 interface CardProps {
-    image: string;
+    posterUrl: string;
     title: string;
     rating: number;
     genres: string[];
@@ -11,7 +11,7 @@ interface CardProps {
 }
 
 const Card: React.FC<CardProps> = ({
-    image,
+    posterUrl,
     title,
     rating,
     genres,
@@ -22,7 +22,7 @@ const Card: React.FC<CardProps> = ({
     return (
         <div className="card">
             <a href={link} className="card__cover">
-                <img src={image} alt={title} />
+                <img src={posterUrl} alt={title} />
                 {/* nút play */}
                 <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
                     <path
@@ -61,9 +61,10 @@ const Card: React.FC<CardProps> = ({
             {/* list */}
             <ul className="card__list">
                 <li>{type}</li>
-                {genres.map((g, idx) => (
+                <li>{genres.at(0)}</li>
+                {/* {genres.map((g, idx) => (
                     <li key={idx}>{g}</li>
-                ))}
+                ))} */}
                 <li>{year}</li>
             </ul>
         </div>

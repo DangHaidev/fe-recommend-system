@@ -9,6 +9,7 @@ export const sendRequest = async <T>(props: IRequest) => {
         queryParams = {},
         useCredentials = false,
         headers = {},
+        accessToken,
         nextOption = {},
     } = props;
 
@@ -18,6 +19,7 @@ export const sendRequest = async <T>(props: IRequest) => {
         // by default setting the content-type to be json type
         headers: new Headers({
             'content-type': 'application/json',
+            ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {}),
             ...headers,
         }),
         body: body ? JSON.stringify(body) : null,

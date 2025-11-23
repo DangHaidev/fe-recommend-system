@@ -6,3 +6,5 @@ const HomePage = async () => {
     console.log('>>>> session', session);
     redirect('/home');
 };
+
+export default HomePage;
