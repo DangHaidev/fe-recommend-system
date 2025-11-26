@@ -1,6 +1,8 @@
 'use client';
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
+import { sendRequest } from '@/src/utils/api';
+import { useSession } from 'next-auth/react';
 
 type RivewType = {
     id: number;
@@ -8,11 +10,16 @@ type RivewType = {
     rating: number;
     content: string;
     time: string;
+    name: string;
 };
 
-export default function CommentsAndReviews(movieId: any) {
+export default function CommentsAndReviews({ movieId }: any) {
     const [activeTab, setActiveTab] = useState('comments');
-    const [results, setResults] = useState([]);
+    const [results, setResults] = useState<RivewType[]>([]);
+    const { data: session, status, update } = useSession();
+    const access_token = session?.user.access_token;
+
+    console.log('>>> access_token', access_token);
 
     useEffect(() => {
         //   async function fetchData() {
@@ -23,17 +30,26 @@ export default function CommentsAndReviews(movieId: any) {
         //     setResults(data.data);
 
         async function fetchData() {
-            const res = await fetch(
-                process.env.NEXT_PUBLIC_BACKEND_URL +
-                    `/review/movie/${movieId}`,
-            );
-            const result = (await res.json()) as RivewType[];
+            const res = await sendRequest<RivewType[]>({
+                url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/review/movie/${movieId}`,
+                method: 'GET',
+                accessToken:
+                    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluQGdtYWlsLmNvbSIsInN1YiI6MTgsImlhdCI6MTc2NDE3NzY1MiwiZXhwIjoxNzY0NDM2ODUyfQ.MdPUvN35ZWmX1tvkTkyk8hlKwnad4gEEze4S1_k8xOA',
+            });
+
+            // const res = await fetch(
+            //     process.env.NEXT_PUBLIC_BACKEND_URL +
+            //         `/review/movie/${movieId}`,
+            // );
+            const result = await res?.data;
             setResults(result);
         }
         fetchData();
     }, [activeTab]);
 
     if (!results) return <div>Loading...</div>;
+    console.log('>>>> results', results);
+    console.log('>>>> modei id', movieId);
 
     return (
         <div className="comments" style={{ marginTop: '-100px' }}>
@@ -1063,8 +1079,8 @@ export default function CommentsAndReviews(movieId: any) {
                     role="tabpanel"
                 >
                     <ul className="reviews__list">
-                        {results?.map((item: any, index: number) => (
-                            <li className="reviews__item" key={item}>
+                        {results?.map((item) => (
+                            <li className="reviews__item" key={item.id}>
                                 <div className="reviews__autor">
                                     <Image
                                         className="reviews__avatar"
@@ -1074,10 +1090,10 @@ export default function CommentsAndReviews(movieId: any) {
                                         height={40}
                                     />
                                     <span className="reviews__name">
-                                        Best Marvel movie in my opinion
+                                        {item.title}
                                     </span>
                                     <span className="reviews__time">
-                                        24.08.2021, 17:53 by Jonathan Banks
+                                        24.08.2021, 17:53 by {item.name}
                                     </span>
                                     <span className="reviews__rating">
                                         {/* Star SVG */}
@@ -1096,17 +1112,7 @@ export default function CommentsAndReviews(movieId: any) {
                                         10
                                     </span>
                                 </div>
-                                <p className="reviews__text">
-                                    There are many variations of passages of
-                                    Lorem Ipsum available, but the majority have
-                                    suffered alteration in some form, by
-                                    injected humour, or randomised words which
-                                    don&apos;t look even slightly believable. If
-                                    you are going to use a passage of Lorem
-                                    Ipsum, you need to be sure there isn&apos;t
-                                    anything embarrassing hidden in the middle
-                                    of text.
-                                </p>
+                                <p className="reviews__text">{item.content}</p>
                             </li>
                         ))}
                     </ul>
