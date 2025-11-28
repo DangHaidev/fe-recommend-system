@@ -20,34 +20,73 @@ export default function CommentsAndReviews({ movieId }: any) {
     const access_token = session?.user.access_token;
 
     console.log('>>> access_token', access_token);
-
+    // Handle loading or session unavailable states
     useEffect(() => {
-        //   async function fetchData() {
-        //         process.env.NEXT_PUBLIC_BACKEND_URL +
-        //             `/review/movie/${movieId}`,
-        //     );
-        //     const data = await res.json();
-        //     setResults(data.data);
+        // Avoid making request if session is not loaded or unavailable
+        if (status === 'loading') {
+            console.log('Session is loading...');
+            return; // Don't run fetch until session is ready
+        }
+
+        if (!access_token) {
+            console.error('Access token is not available');
+            return;
+        }
 
         async function fetchData() {
-            const res = await sendRequest<RivewType[]>({
-                url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/review/movie/${movieId}`,
-                method: 'GET',
-                accessToken:
-                    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluQGdtYWlsLmNvbSIsInN1YiI6MTgsImlhdCI6MTc2NDE3NzY1MiwiZXhwIjoxNzY0NDM2ODUyfQ.MdPUvN35ZWmX1tvkTkyk8hlKwnad4gEEze4S1_k8xOA',
-            });
+            try {
+                const res = await sendRequest<RivewType[]>({
+                    url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/review/movie/${movieId}`,
+                    method: 'GET',
+                    // accessToken: access_token, // Use the session token
+                });
 
-            // const res = await fetch(
-            //     process.env.NEXT_PUBLIC_BACKEND_URL +
-            //         `/review/movie/${movieId}`,
-            // );
-            const result = await res?.data;
-            setResults(result);
+                const result = await res?.data;
+                setResults(result);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
         }
-        fetchData();
-    }, [activeTab]);
 
-    if (!results) return <div>Loading...</div>;
+        fetchData();
+    }, [activeTab, status, access_token, movieId]); // Re-run the effect if activeTab, session status, or access_token changes
+
+    // Render based on session status and results
+    if (status === 'loading') {
+        return <div>Loading...</div>;
+    }
+
+    if (status === 'unauthenticated') {
+        return <div>Please sign in to view comments and reviews.</div>;
+    }
+
+    // useEffect(() => {
+    //     //   async function fetchData() {
+    //     //         process.env.NEXT_PUBLIC_BACKEND_URL +
+    //     //             `/review/movie/${movieId}`,
+    //     //     );
+    //     //     const data = await res.json();
+    //     //     setResults(data.data);
+
+    //     async function fetchData() {
+    //         const res = await sendRequest<RivewType[]>({
+    //             url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/review/movie/${movieId}`,
+    //             method: 'GET',
+    //             accessToken:
+    //                 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluQGdtYWlsLmNvbSIsInN1YiI6MTgsImlhdCI6MTc2NDE3NzY1MiwiZXhwIjoxNzY0NDM2ODUyfQ.MdPUvN35ZWmX1tvkTkyk8hlKwnad4gEEze4S1_k8xOA',
+    //         });
+
+    //         // const res = await fetch(
+    //         //     process.env.NEXT_PUBLIC_BACKEND_URL +
+    //         //         `/review/movie/${movieId}`,
+    //         // );
+    //         const result = await res?.data;
+    //         setResults(result);
+    //     }
+    //     fetchData();
+    // }, [activeTab]);
+
+    // if (!results) return <div>Loading...</div>;
     console.log('>>>> results', results);
     console.log('>>>> modei id', movieId);
 
