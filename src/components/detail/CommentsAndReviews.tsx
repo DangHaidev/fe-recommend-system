@@ -1,8 +1,9 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { FormEvent, useEffect, useState } from 'react';
 import Image from 'next/image';
 import { sendRequest } from '@/src/utils/api';
 import { useSession } from 'next-auth/react';
+import router from 'next/router';
 
 type RivewType = {
     id: number;
@@ -18,6 +19,7 @@ export default function CommentsAndReviews({ movieId }: any) {
     const [results, setResults] = useState<RivewType[]>([]);
     const { data: session, status, update } = useSession();
     const access_token = session?.user.access_token;
+    const userId = session?.user.id;
 
     console.log('>>> access_token', access_token);
     // Handle loading or session unavailable states
@@ -89,6 +91,35 @@ export default function CommentsAndReviews({ movieId }: any) {
     // if (!results) return <div>Loading...</div>;
     console.log('>>>> results', results);
     console.log('>>>> modei id', movieId);
+
+    async function onSubmit(event: FormEvent<HTMLFormElement>) {
+        event.preventDefault();
+
+        const formData = new FormData(event.currentTarget);
+        const formObj: Record<string, string> = {};
+
+        // Chuyển FormData thành đối tượng JSON
+        formData.forEach((value, key) => {
+            formObj[key] = value as string;
+        });
+        console.log(formObj);
+
+        const res = await sendRequest<IBackendRes<any>>({
+            url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/review`,
+            method: 'POST',
+            body: formObj,
+            accessToken: access_token,
+        });
+
+        console.log(res);
+        // Handle response if necessary
+        if (res?.data) {
+            router.push(`/verify/${res?.data?.id}`);
+        } else {
+            // setError('Lỗi đăng ký');
+        }
+        // ...
+    }
 
     return (
         <div className="comments" style={{ marginTop: '-100px' }}>
@@ -1156,7 +1187,11 @@ export default function CommentsAndReviews({ movieId }: any) {
                         ))}
                     </ul>
 
-                    <form action="#" className="reviews__form">
+                    <form
+                        action="#"
+                        className="reviews__form"
+                        onSubmit={onSubmit}
+                    >
                         <div className="row">
                             <div className="col-12 col-md-9 col-lg-10 col-xl-9">
                                 <div className="sign__group">
@@ -1172,7 +1207,7 @@ export default function CommentsAndReviews({ movieId }: any) {
                             <div className="col-12 col-md-3 col-lg-2 col-xl-3">
                                 <div className="sign__group">
                                     <select
-                                        name="select"
+                                        name="rating"
                                         id="select"
                                         className="sign__select"
                                     >
@@ -1195,15 +1230,25 @@ export default function CommentsAndReviews({ movieId }: any) {
                                 <div className="sign__group">
                                     <textarea
                                         id="text2"
-                                        name="text2"
+                                        name="content"
                                         className="sign__textarea"
                                         placeholder="Add review"
                                     ></textarea>
                                 </div>
                             </div>
+                            <input
+                                className="hidden"
+                                name="movieId"
+                                value={movieId}
+                            ></input>
+                            <input
+                                className="hidden"
+                                name="userId"
+                                value={userId}
+                            />
 
                             <div className="col-12">
-                                <button type="button" className="sign__btn">
+                                <button type="submit" className="sign__btn">
                                     Send
                                 </button>
                             </div>
