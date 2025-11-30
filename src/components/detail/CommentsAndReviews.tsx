@@ -3,7 +3,8 @@ import { FormEvent, useEffect, useState } from 'react';
 import Image from 'next/image';
 import { sendRequest } from '@/src/utils/api';
 import { useSession } from 'next-auth/react';
-import router from 'next/router';
+import { useRouter } from 'next/navigation';
+import { sendRequestClient } from '@/src/utils/lib/sendrequestclient';
 
 type RivewType = {
     id: number;
@@ -15,6 +16,7 @@ type RivewType = {
 };
 
 export default function CommentsAndReviews({ movieId }: any) {
+    const router = useRouter();
     const [activeTab, setActiveTab] = useState('comments');
     const [results, setResults] = useState<RivewType[]>([]);
     const { data: session, status, update } = useSession();
@@ -28,11 +30,6 @@ export default function CommentsAndReviews({ movieId }: any) {
         if (status === 'loading') {
             console.log('Session is loading...');
             return; // Don't run fetch until session is ready
-        }
-
-        if (!access_token) {
-            console.error('Access token is not available');
-            return;
         }
 
         async function fetchData() {
@@ -58,66 +55,31 @@ export default function CommentsAndReviews({ movieId }: any) {
         return <div>Loading...</div>;
     }
 
-    if (status === 'unauthenticated') {
-        return <div>Please sign in to view comments and reviews.</div>;
-    }
-
-    // useEffect(() => {
-    //     //   async function fetchData() {
-    //     //         process.env.NEXT_PUBLIC_BACKEND_URL +
-    //     //             `/review/movie/${movieId}`,
-    //     //     );
-    //     //     const data = await res.json();
-    //     //     setResults(data.data);
-
-    //     async function fetchData() {
-    //         const res = await sendRequest<RivewType[]>({
-    //             url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/review/movie/${movieId}`,
-    //             method: 'GET',
-    //             accessToken:
-    //                 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluQGdtYWlsLmNvbSIsInN1YiI6MTgsImlhdCI6MTc2NDE3NzY1MiwiZXhwIjoxNzY0NDM2ODUyfQ.MdPUvN35ZWmX1tvkTkyk8hlKwnad4gEEze4S1_k8xOA',
-    //         });
-
-    //         // const res = await fetch(
-    //         //     process.env.NEXT_PUBLIC_BACKEND_URL +
-    //         //         `/review/movie/${movieId}`,
-    //         // );
-    //         const result = await res?.data;
-    //         setResults(result);
-    //     }
-    //     fetchData();
-    // }, [activeTab]);
-
-    // if (!results) return <div>Loading...</div>;
-    console.log('>>>> results', results);
-    console.log('>>>> modei id', movieId);
-
     async function onSubmit(event: FormEvent<HTMLFormElement>) {
         event.preventDefault();
 
         const formData = new FormData(event.currentTarget);
-        const formObj: Record<string, string> = {};
+        const formObj: Record<string, FormDataEntryValue> = {};
 
         // Chuyển FormData thành đối tượng JSON
         formData.forEach((value, key) => {
-            formObj[key] = value as string;
+            formObj[key] = value;
         });
         console.log(formObj);
 
-        const res = await sendRequest<IBackendRes<any>>({
+        const res = await sendRequestClient<IBackendRes<RivewType[]>>({
             url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/review`,
             method: 'POST',
             body: formObj,
-            accessToken: access_token,
         });
 
         console.log(res);
         // Handle response if necessary
-        if (res?.data) {
-            router.push(`/verify/${res?.data?.id}`);
-        } else {
-            // setError('Lỗi đăng ký');
-        }
+        // if (res?.data) {
+        //     router.push(`/verify/${res?.data?.id}`);
+        // } else {
+        //     // setError('Lỗi đăng ký');
+        // }
         // ...
     }
 
@@ -1163,7 +1125,8 @@ export default function CommentsAndReviews({ movieId }: any) {
                                         {item.title}
                                     </span>
                                     <span className="reviews__time">
-                                        24.08.2021, 17:53 by {item.name}
+                                        {item.createdAt + ' '}
+                                        by {' ' + item.user.username}
                                     </span>
                                     <span className="reviews__rating">
                                         {/* Star SVG */}
@@ -1179,7 +1142,7 @@ export default function CommentsAndReviews({ movieId }: any) {
                                                 strokeWidth="1.5"
                                             />
                                         </svg>
-                                        10
+                                        {item.rating}
                                     </span>
                                 </div>
                                 <p className="reviews__text">{item.content}</p>
@@ -1248,9 +1211,19 @@ export default function CommentsAndReviews({ movieId }: any) {
                             />
 
                             <div className="col-12">
-                                <button type="submit" className="sign__btn">
-                                    Send
-                                </button>
+                                {session ? (
+                                    <button type="submit" className="sign__btn">
+                                        Send
+                                    </button>
+                                ) : (
+                                    <button
+                                        type="button"
+                                        className="sign__btn"
+                                        onClick={() => router.push('/signin')}
+                                    >
+                                        Login to review
+                                    </button>
+                                )}
                             </div>
                         </div>
                     </form>
@@ -1261,4 +1234,3 @@ export default function CommentsAndReviews({ movieId }: any) {
         </div>
     );
 }
-// filepath: d:\Project1\DOAN\fe-recommend-system\src\components\detail\CommentsAndReviews.tsx

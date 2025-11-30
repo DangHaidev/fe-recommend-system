@@ -3,6 +3,26 @@ interface MediaPlayerProps {
 }
 export default function MediaPlayer({ trailerUrl }: MediaPlayerProps) {
     console.log('>>> movieurl', trailerUrl);
+
+    //  async function onSubmit(event: FormEvent<HTMLFormElement>) {
+    //         event.preventDefault();
+
+    //         const formData = new FormData(event.currentTarget);
+    //         const formObj: Record<string, FormDataEntryValue> = {};
+
+    //         // Chuyển FormData thành đối tượng JSON
+    //         formData.forEach((value, key) => {
+    //             formObj[key] = value;
+    //         });
+    //         console.log(formObj);
+
+    //         const res = await sendRequest<IBackendRes<any>>({
+    //             url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/review`,
+    //             method: 'POST',
+    //             body: formObj,
+    //             accessToken: access_token,
+    //         });
+    //     }
     return (
         <div className="col-12 col-xl-8" style={{ marginTop: '15px' }}>
             <div
