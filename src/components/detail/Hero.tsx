@@ -5,6 +5,7 @@ import SeriesCarousel from './SeriesCarousel';
 
 interface MovieProps {
     movie: {
+        tmdbId: number;
         title: string;
         poster_path: string;
         overview: string;
@@ -165,7 +166,10 @@ export default function Hero({ movie }: MovieProps) {
                             {/* end article content */}
                         </div>
 
-                        <MediaPlayer trailerUrl={movie.trailer} />
+                        <MediaPlayer
+                            trailerUrl={movie.trailer}
+                            movieId={movie.tmdbId}
+                        />
                         <SeriesCarousel />
 
                         <div className="col-12 col-xl-8">
