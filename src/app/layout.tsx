@@ -1,11 +1,15 @@
+import './globals-setup';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
 import './vendor.css';
+// import '@ant-design/v5-patch-for-react-19';
 import Script from 'next/script';
 import { Header } from '../components/layout/Header';
 import { Footer } from '../components/layout/Footer';
 import NextAuthWrapper from '../services/nextauth.wrapper';
+import { App, ConfigProvider } from 'antd';
+import { AntdRegistry } from '@ant-design/nextjs-registry';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -24,7 +28,13 @@ export default function RootLayout({
             <body className={inter.className}>
                 {/* <Header /> */}
                 <main>
-                    <NextAuthWrapper>{children}</NextAuthWrapper>
+                    <AntdRegistry>
+                        <ConfigProvider>
+                            <App>
+                                <NextAuthWrapper>{children}</NextAuthWrapper>
+                            </App>
+                        </ConfigProvider>
+                    </AntdRegistry>
                 </main>
                 {/* <Footer /> */}
                 <Script

@@ -1,8 +1,81 @@
+'use client';
+import { sendRequest } from '@/src/utils/api';
+import { sendRequestClient } from '@/src/utils/lib/sendrequestclient';
+import { App } from 'antd';
+import { useSession } from 'next-auth/react';
+import { FormEvent, useEffect } from 'react';
+
 interface MediaPlayerProps {
     trailerUrl: string;
+    movieId: number;
 }
-export default function MediaPlayer({ trailerUrl }: MediaPlayerProps) {
-    console.log('>>> movieurl', trailerUrl);
+export default function MediaPlayer({ trailerUrl, movieId }: MediaPlayerProps) {
+    const { data: session, status, update } = useSession();
+    const { notification } = App.useApp();
+    const access_token = session?.user.access_token;
+    const userId = parseInt(session?.user.id, 10);
+    console.log('>>> movieurl', trailerUrl, movieId, userId);
+
+    // Handle loading or session unavailable states
+    useEffect(() => {
+        // Avoid making request if session is not loaded or unavailable
+        if (status === 'loading') {
+            console.log('Session is loading...');
+            return; // Don't run fetch until session is ready
+        }
+    }, [status, access_token]);
+
+    async function onSubmit(event: any) {
+        event.preventDefault();
+
+        const res = await sendRequestClient<IBackendRes<MediaPlayerProps>>({
+            url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/user-interact/${userId}/${movieId}`,
+            method: 'POST',
+        });
+
+        console.log(res.statusCode);
+        //handle
+        if (res.statusCode === 201) {
+            // Thành công: Hiển thị thông báo thành công
+            notification.success({
+                message: 'Đăng ký thành công',
+                description: 'Tài khoản của bạn đã được tạo.',
+                duration: 3, // Tự động đóng sau 3 giây
+            });
+        } else {
+            if (res.statusCode === 409) {
+                notification.error({
+                    message: `Lỗi conflict`,
+                    description:
+                        res.message ||
+                        'Danh sach yeu thich đã tồn tại. Vui lòng kiểm tra lại.',
+                    duration: 3, // Không tự động đóng, yêu cầu người dùng đọc
+                });
+            }
+            // 2. Lỗi 400 Bad Request/422 Validation
+            else if (res.statusCode === 400 || res.statusCode === 422) {
+                // NestJS thường trả về chi tiết lỗi xác thực trong trường 'message' (có thể là array)
+                const detailMessage = Array.isArray(res.message)
+                    ? res.message.join(', ')
+                    : res.message;
+
+                notification.warning({
+                    message: `Lỗi ${status} Dữ liệu không hợp lệ`,
+                    description:
+                        detailMessage ||
+                        'Vui lòng kiểm tra lại tất cả các trường thông tin.',
+                });
+            }
+            // 3. Các lỗi server khác (5xx)
+            else {
+                notification.error({
+                    message: `Lỗi Máy chủ ${status}`,
+                    description:
+                        'Có lỗi xảy ra trên máy chủ. Vui lòng thử lại sau.',
+                });
+            }
+        }
+    }
     return (
         <div className="col-12 col-xl-8" style={{ marginTop: '15px' }}>
             <div
@@ -53,7 +126,11 @@ export default function MediaPlayer({ trailerUrl }: MediaPlayerProps) {
                 </div>
 
                 {/* add .active class */}
-                <button className="article__favorites" type="button">
+                <button
+                    className="article__favorites"
+                    type="button"
+                    onClick={onSubmit}
+                >
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                         <path d="M16,2H8A3,3,0,0,0,5,5V21a1,1,0,0,0,.5.87,1,1,0,0,0,1,0L12,18.69l5.5,3.18A1,1,0,0,0,18,22a1,1,0,0,0,.5-.13A1,1,0,0,0,19,21V5A3,3,0,0,0,16,2Zm1,17.27-4.5-2.6a1,1,0,0,0-1,0L7,19.27V5A1,1,0,0,1,8,4h8a1,1,0,0,1,1,1Z"></path>
                     </svg>

@@ -25,15 +25,17 @@ const SearchBar = () => {
             setResults([]);
             return;
         }
-        setResults(data);
+        setResults(results);
+        console.log('>>> query', query);
+        console.log('>>> results', results);
 
         const timeout = setTimeout(async () => {
             const res = await fetch(
                 process.env.NEXT_PUBLIC_BACKEND_URL +
-                    `/movies/search?q=${query}`,
+                    `/movies/search/?q=${query}`,
             );
             const data = await res.json();
-            setResults(data);
+            setResults(data.data);
         }, 300);
 
         return () => clearTimeout(timeout);
@@ -72,7 +74,7 @@ const SearchBar = () => {
                                 <div className="flex flex-row gap-2">
                                     <div className="flex-shrink-0">
                                         <Image
-                                            src="/img/card/1.png"
+                                            src={movie.posterUrl}
                                             alt={'hinh anh'}
                                             width={50}
                                             height={60}
@@ -80,7 +82,7 @@ const SearchBar = () => {
                                     </div>
                                     <div className="text-xs whitespace-normal">
                                         <h1>{movie.title}</h1>
-                                        <p>{movie.year}</p>
+                                        <p>{movie.runtime}</p>
                                     </div>
                                 </div>
                             </li>

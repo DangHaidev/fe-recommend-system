@@ -22,7 +22,7 @@ const CardList: React.FC<CardListProps> = ({ movies }) => {
             {movies.map((movie) => (
                 <Card
                     key={movie.id}
-                    image={movie.image}
+                    posterUrl={movie.image}
                     title={movie.title}
                     rating={movie.rating}
                     genres={movie.genres}

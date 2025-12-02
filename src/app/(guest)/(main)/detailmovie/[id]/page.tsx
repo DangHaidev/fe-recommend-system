@@ -35,7 +35,7 @@ export default async function DetailPage({
                 <div className="container">
                     <div className="row">
                         <div className="col-12 col-xl-8">
-                            <CommentsAndReviews />
+                            <CommentsAndReviews movieId={id} />
                         </div>
                         <div className="col-12 col-xl-4">
                             <Sidebar />
