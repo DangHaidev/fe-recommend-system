@@ -162,7 +162,14 @@ export function Header() {
                                     </svg>
                                 </button>
 
-                                {session?.user?.name ?? (
+                                {session?.user?.name ? (
+                                    <Link
+                                        href={'/profile'}
+                                        className="text-white text-md pl-1 font-medium"
+                                    >
+                                        Welcome {session.user.name}
+                                    </Link>
+                                ) : (
                                     <Link
                                         href="/signin"
                                         className="header__user"
