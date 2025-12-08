@@ -23,7 +23,7 @@ export async function POST(req) {
     const fileName = `${Date.now()}-${file.name}`;
 
     const { data, error } = await supabase.storage
-        .from('images') // tên bucket
+        .from('avatar') // tên bucket
         .upload(fileName, buffer, {
             contentType: file.type,
             upsert: false,
@@ -33,7 +33,7 @@ export async function POST(req) {
         return NextResponse.json({ error: error.message }, { status: 500 });
     }
 
-    const publicUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/images/${fileName}`;
+    const publicUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/avatar/${fileName}`;
 
     return NextResponse.json({
         message: 'Uploaded!',

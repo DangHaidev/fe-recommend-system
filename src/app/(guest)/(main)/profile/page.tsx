@@ -215,7 +215,9 @@ export default function ProfilePage() {
                             access_token={session?.user.access_token}
                         />
                     )}
-                    {activeTab === 'settings' && <ProfileSettings />}
+                    {activeTab === 'settings' && (
+                        <ProfileSettings userId={session?.user.id} />
+                    )}
                 </div>
             </div>
         </div>
