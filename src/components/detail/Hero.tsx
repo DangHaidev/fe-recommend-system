@@ -1,7 +1,10 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import MediaPlayer from './MediaPlayer';
 import SeriesCarousel from './SeriesCarousel';
+import { useSession } from 'next-auth/react';
+import { sendRequestClient } from '@/src/utils/lib/sendrequestclient';
+import { log } from 'console';
 
 interface MovieProps {
     movie: {
@@ -18,6 +21,27 @@ interface MovieProps {
 }
 
 export default function Hero({ movie }: MovieProps) {
+    const { data: session, status } = useSession();
+    const userId = session?.user?.id;
+
+    async function logEvent() {
+        await sendRequestClient<IBackendRes<any>>({
+            url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/events/log`,
+            method: 'POST',
+            body: {
+                eventName: 'viewed_movie',
+                userId,
+                movieId: movie.tmdbId,
+            },
+        });
+    }
+
+    useEffect(() => {
+        if (status === 'authenticated' && userId && movie?.tmdbId) {
+            logEvent();
+        }
+    }, [status, userId, movie?.tmdbId]);
+
     const [showTrailer, setShowTrailer] = useState(false);
     console.log('>>> movie', movie);
     return (
