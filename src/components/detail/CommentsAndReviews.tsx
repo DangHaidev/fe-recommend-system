@@ -57,6 +57,7 @@ export default function CommentsAndReviews({ movieId }: any) {
 
     async function onSubmit(event: FormEvent<HTMLFormElement>) {
         event.preventDefault();
+        const form = event.currentTarget;
 
         const formData = new FormData(event.currentTarget);
         const formObj: Record<string, FormDataEntryValue> = {};
@@ -74,6 +75,8 @@ export default function CommentsAndReviews({ movieId }: any) {
         });
 
         console.log(res);
+        form.reset();
+        router.refresh();
         // Handle response if necessary
         // if (res?.data) {
         //     router.push(`/verify/${res?.data?.id}`);
