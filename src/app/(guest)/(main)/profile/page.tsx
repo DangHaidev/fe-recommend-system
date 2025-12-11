@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { signOut } from 'next-auth/react';
 import ProfileHeader from '@/src/components/profile/ProfileHeader';
 import ProfileTabs from '@/src/components/profile/ProfileTabs';
 import ProfileStats from '@/src/components/profile/ProfileStats';
@@ -98,7 +99,12 @@ export default function ProfilePage() {
 
                         {/* Logout Button */}
                         <div>
-                            <button className="flex items-center px-4 py-2 text-white hover:bg-slate-700 rounded-lg transition-colors">
+                            <button
+                                onClick={() =>
+                                    signOut({ callbackUrl: '/signin' })
+                                }
+                                className="flex items-center px-4 py-2 text-white hover:bg-slate-700 rounded-lg transition-colors"
+                            >
                                 <span className="mr-2">Sign out</span>
                                 <svg
                                     className="w-4 h-4 text-blue-400"
