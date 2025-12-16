@@ -33,6 +33,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                         email: res.data?.user?.email,
                         name: res.data?.user?.name,
                         access_token: res.data?.access_token,
+                        image: res.data?.user?.image,
                     };
                     // return res.data;
                 } else if (+res.statusCode === 401) {

@@ -72,9 +72,9 @@ export function Header() {
                                 <li className="header__nav-item">
                                     <Link
                                         className="header__nav-link"
-                                        href="/pricing"
+                                        href="/recommendations"
                                     >
-                                        Pricing plans
+                                        Movies for you
                                     </Link>
                                 </li>
 

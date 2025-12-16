@@ -44,7 +44,7 @@ export default async function DetailPage({
                 </div>
             </section>
 
-            <Similar />
+            <Similar movieId={id} />
         </>
     );
 }

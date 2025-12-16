@@ -38,6 +38,7 @@ declare global {
             email: string;
             password: string;
             name: string;
+            image: string;
         };
         access_token: string;
     }
