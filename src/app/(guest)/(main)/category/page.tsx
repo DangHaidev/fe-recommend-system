@@ -150,8 +150,8 @@ export default function CategoryPage() {
         posterUrl: movie.posterUrl, // gắn prefix ảnh
         title: movie.title,
         rating: movie.vote_average,
-        genres: movie.genre_ids || [],
-        year: new Date(movie.release_date).getFullYear(),
+        genres: movie.genres || [],
+        year: new Date(movie.releaseDate).getFullYear(),
         type: 'Movie',
         link: `/detailmovie/${movie.tmdbId}`,
     }));

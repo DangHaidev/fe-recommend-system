@@ -179,6 +179,18 @@ export default function Similar({ movieId }: any) {
         fetchMovies();
     }, []);
 
+    // map lại dữ liệu cho phù hợp với Card
+    const formattedMovies = movies.map((movie: any) => ({
+        id: movie.id,
+        posterUrl: movie.posterUrl, // gắn prefix ảnh
+        title: movie.title,
+        rating: movie.vote_average,
+        genres: movie.genres || [],
+        year: new Date(movie.releaseDate).getFullYear(),
+        type: 'Movie',
+        link: `/detailmovie/${movie.tmdbId}`,
+    }));
+
     return (
         <section className="section">
             <div className="container">
@@ -192,7 +204,7 @@ export default function Similar({ movieId }: any) {
                     </div>
                     <div className="col-12">
                         <div className="row row--grid">
-                            {movies.map((movie) => (
+                            {formattedMovies.map((movie) => (
                                 <div
                                     className="col-6 col-sm-4 col-lg-3 col-xl-2"
                                     key={movie.id}
