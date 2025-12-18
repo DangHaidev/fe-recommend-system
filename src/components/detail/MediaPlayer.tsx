@@ -1,15 +1,17 @@
 'use client';
-import { sendRequest } from '@/src/utils/api';
 import { sendRequestClient } from '@/src/utils/lib/sendrequestclient';
 import { App } from 'antd';
 import { useSession } from 'next-auth/react';
-import { FormEvent, useEffect } from 'react';
+import { FormEvent, useEffect, useState } from 'react';
 
 interface MediaPlayerProps {
     trailerUrl: string;
     movieId: number;
 }
 export default function MediaPlayer({ trailerUrl, movieId }: MediaPlayerProps) {
+    const [isFavorite, setIsFavorite] = useState(false);
+    const [isFavorited, setIsFavorited] = useState('Add to favorites');
+
     const { data: session, status, update } = useSession();
     const { notification } = App.useApp();
     const access_token = session?.user.access_token;
@@ -23,7 +25,23 @@ export default function MediaPlayer({ trailerUrl, movieId }: MediaPlayerProps) {
             console.log('Session is loading...');
             return; // Don't run fetch until session is ready
         }
+
+        if (status === 'authenticated' && access_token && userId) {
+            checkFavorite();
+        }
     }, [status, access_token]);
+
+    async function checkFavorite() {
+        const res2 = await sendRequestClient<IBackendRes<any>>({
+            url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/user-interact/${userId}/${movieId}/favorite`,
+            method: 'POST',
+        });
+
+        if (res2.data === true) {
+            setIsFavorite(true);
+            setIsFavorited('Remove from favorites');
+        }
+    }
 
     async function onSubmit(event: any) {
         event.preventDefault();
@@ -33,13 +51,24 @@ export default function MediaPlayer({ trailerUrl, movieId }: MediaPlayerProps) {
             method: 'POST',
         });
 
+        const res2 = await sendRequestClient<IBackendRes<any>>({
+            url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/events/log`,
+            method: 'POST',
+            body: {
+                eventName: 'add_to_watchlist',
+                userId,
+                movieId: movieId,
+            },
+        });
+
         console.log(res.statusCode);
         //handle
-        if (res.statusCode === 201) {
+        if (res.statusCode === 201 && res2.statusCode === 201) {
+            setIsFavorited('Remove from favorites');
             // Thành công: Hiển thị thông báo thành công
             notification.success({
-                message: 'Đăng ký thành công',
-                description: 'Tài khoản của bạn đã được tạo.',
+                message: 'Thêm vào danh sách xem sau',
+                description: 'Thêm thành công',
                 duration: 3, // Tự động đóng sau 3 giây
             });
         } else {
@@ -76,6 +105,37 @@ export default function MediaPlayer({ trailerUrl, movieId }: MediaPlayerProps) {
             }
         }
     }
+
+    async function onSubmitRemoveFavorite(event: any) {
+        event.preventDefault();
+
+        const res = await sendRequestClient<IBackendRes<MediaPlayerProps>>({
+            url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/user-interact/${userId}/${movieId}/remove`,
+            method: 'POST',
+        });
+
+        const res2 = await sendRequestClient<IBackendRes<any>>({
+            url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/events/log`,
+            method: 'POST',
+            body: {
+                eventName: 'remove_from_watchlist',
+                userId,
+                movieId: movieId,
+            },
+        });
+
+        //handle
+        if (res.statusCode === 201 && res2.statusCode === 201) {
+            setIsFavorited('Add to favorites');
+            // Thành công: Hiển thị thông báo thành công
+            notification.success({
+                message: 'Thành công',
+                description: 'Xóa khỏi danh sách yêu thích thành công',
+                duration: 3, // Tự động đóng sau 3 giây
+            });
+        }
+    }
+
     return (
         <div className="col-12 col-xl-8" style={{ marginTop: '15px' }}>
             <div
@@ -126,16 +186,35 @@ export default function MediaPlayer({ trailerUrl, movieId }: MediaPlayerProps) {
                 </div>
 
                 {/* add .active class */}
-                <button
-                    className="article__favorites"
-                    type="button"
-                    onClick={onSubmit}
-                >
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                        <path d="M16,2H8A3,3,0,0,0,5,5V21a1,1,0,0,0,.5.87,1,1,0,0,0,1,0L12,18.69l5.5,3.18A1,1,0,0,0,18,22a1,1,0,0,0,.5-.13A1,1,0,0,0,19,21V5A3,3,0,0,0,16,2Zm1,17.27-4.5-2.6a1,1,0,0,0-1,0L7,19.27V5A1,1,0,0,1,8,4h8a1,1,0,0,1,1,1Z"></path>
-                    </svg>
-                    Add to favorites
-                </button>
+                {isFavorite ? (
+                    <button
+                        className="article__favorites"
+                        type="button"
+                        onClick={onSubmitRemoveFavorite}
+                    >
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 24 24"
+                        >
+                            <path d="M16,2H8A3,3,0,0,0,5,5V21a1,1,0,0,0,.5.87,1,1,0,0,0,1,0L12,18.69l5.5,3.18A1,1,0,0,0,18,22a1,1,0,0,0,.5-.13A1,1,0,0,0,19,21V5A3,3,0,0,0,16,2Zm1,17.27-4.5-2.6a1,1,0,0,0-1,0L7,19.27V5A1,1,0,0,1,8,4h8a1,1,0,0,1,1,1Z"></path>
+                        </svg>
+                        {isFavorited}
+                    </button>
+                ) : (
+                    <button
+                        className="article__favorites"
+                        type="button"
+                        onClick={onSubmit}
+                    >
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 24 24"
+                        >
+                            <path d="M16,2H8A3,3,0,0,0,5,5V21a1,1,0,0,0,.5.87,1,1,0,0,0,1,0L12,18.69l5.5,3.18A1,1,0,0,0,18,22a1,1,0,0,0,.5-.13A1,1,0,0,0,19,21V5A3,3,0,0,0,16,2Zm1,17.27-4.5-2.6a1,1,0,0,0-1,0L7,19.27V5A1,1,0,0,1,8,4h8a1,1,0,0,1,1,1Z"></path>
+                        </svg>
+                        {isFavorited}
+                    </button>
+                )}
             </div>
         </div>
     );

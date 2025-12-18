@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { signOut } from 'next-auth/react';
 import ProfileHeader from '@/src/components/profile/ProfileHeader';
 import ProfileTabs from '@/src/components/profile/ProfileTabs';
 import ProfileStats from '@/src/components/profile/ProfileStats';
@@ -8,6 +9,7 @@ import FavoritesGrid from '@/src/components/profile/FavoritesGrid';
 import ProfileSettings from '@/src/components/profile/ProfileSettings';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
+import LastestReview from '@/src/components/profile/LastestReview';
 
 export default function ProfilePage() {
     const [activeTab, setActiveTab] = useState('profile');
@@ -69,13 +71,21 @@ export default function ProfilePage() {
                         {/* Avatar Section */}
                         <div className="flex items-center">
                             <div className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center mr-3 shadow-sm">
-                                <svg
-                                    className="w-8 h-8 text-blue-500"
-                                    fill="currentColor"
-                                    viewBox="0 0 24 24"
-                                >
-                                    <path d="M15.71,12.71a6,6,0,1,0-7.42,0,10,10,0,0,0-6.22,8.18,1,1,0,0,0,2,.22,8,8,0,0,1,15.9,0,1,1,0,0,0,1,.89h.11a1,1,0,0,0,.88-1.1A10,10,0,0,0,15.71,12.71ZM12,12a4,4,0,1,1,4-4A4,4,0,0,1,12,12Z" />
-                                </svg>
+                                {session?.user?.image ? (
+                                    <img
+                                        src={session?.user?.image}
+                                        alt="User Avatar"
+                                        className="w-8 h-8 rounded-full"
+                                    />
+                                ) : (
+                                    <svg
+                                        className="w-8 h-8 text-blue-500"
+                                        fill="currentColor"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <path d="M15.71,12.71a6,6,0,1,0-7.42,0,10,10,0,0,0-6.22,8.18,1,1,0,0,0,2,.22,8,8,0,0,1,15.9,0,1,1,0,0,0,1,.89h.11a1,1,0,0,0,.88-1.1A10,10,0,0,0,15.71,12.71ZM12,12a4,4,0,1,1,4-4A4,4,0,0,1,12,12Z" />
+                                    </svg>
+                                )}
                             </div>
                             <div>
                                 <h3 className="text-0.5xl font-bold text-white mb-0">
@@ -97,7 +107,12 @@ export default function ProfilePage() {
 
                         {/* Logout Button */}
                         <div>
-                            <button className="flex items-center px-4 py-2 text-white hover:bg-slate-700 rounded-lg transition-colors">
+                            <button
+                                onClick={() =>
+                                    signOut({ callbackUrl: '/signin' })
+                                }
+                                className="flex items-center px-4 py-2 text-white hover:bg-slate-700 rounded-lg transition-colors"
+                            >
                                 <span className="mr-2">Sign out</span>
                                 <svg
                                     className="w-4 h-4 text-blue-400"
@@ -201,89 +216,9 @@ export default function ProfilePage() {
                                     </div>
                                 </div>
 
-                                <div
-                                    className="rounded-2xl p-4"
-                                    style={{ backgroundColor: '#151f30' }}
-                                >
-                                    <h3 className="text-lg font-semibold mb-3 flex items-center">
-                                        <svg
-                                            className="w-5 h-5 mr-2 text-blue-400"
-                                            fill="currentColor"
-                                            viewBox="0 0 24 24"
-                                        >
-                                            <path d="M22,9.67A1,1,0,0,0,21.14,9l-5.69-.83L12.9,3a1,1,0,0,0-1.8,0L8.55,8.16,2.86,9a1,1,0,0,0-.81.68,1,1,0,0,0,.25,1l4.13,4-1,5.68A1,1,0,0,0,6.9,21.44L12,18.77l5.1,2.67a.93.93,0,0,0,.46.12,1,1,0,0,0,.59-.19,1,1,0,0,0,.4-1l-1-5.68,4.13-4A1,1,0,0,0,22,9.67Zm-6.15,4a1,1,0,0,0-.29.88l.72,4.2-3.76-2a1.06,1.06,0,0,0-.94,0l-3.76,2,.72-4.2a1,1,0,0,0-.29-.88l-3-3,4.21-.61a1,1,0,0,0,.76-.55L12,5.7l1.88,3.82a1,1,0,0,0,.76.55l4.21.61Z" />
-                                        </svg>
-                                        <span className="text-white">
-                                            Latest reviews
-                                        </span>
-                                    </h3>
-                                    <div className="overflow-x-auto">
-                                        <table className="w-full text-sm">
-                                            <thead>
-                                                <tr className="border-b border-gray-700">
-                                                    <th className="text-left py-3 px-2">
-                                                        ITEM
-                                                    </th>
-                                                    <th className="text-left py-3 px-2">
-                                                        AUTHOR
-                                                    </th>
-                                                    <th className="text-left py-3 px-2">
-                                                        RATING
-                                                    </th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr className="border-b border-gray-700">
-                                                    <td className="py-3 px-2">
-                                                        <a
-                                                            href="#"
-                                                            className="text-blue-400 hover:text-blue-300"
-                                                        >
-                                                            I Dream in Another
-                                                            Language
-                                                        </a>
-                                                    </td>
-                                                    <td className="py-3 px-2 text-gray-400">
-                                                        Jonathan Banks
-                                                    </td>
-                                                    <td className="py-3 px-2 flex items-center">
-                                                        <svg
-                                                            className="w-4 h-4 text-yellow-400 mr-1"
-                                                            fill="currentColor"
-                                                            viewBox="0 0 24 24"
-                                                        >
-                                                            <path d="M22,9.67A1,1,0,0,0,21.14,9l-5.69-.83L12.9,3a1,1,0,0,0-1.8,0L8.55,8.16,2.86,9a1,1,0,0,0-.81.68,1,1,0,0,0,.25,1l4.13,4-1,5.68A1,1,0,0,0,6.9,21.44L12,18.77l5.1,2.67a.93.93,0,0,0,.46.12,1,1,0,0,0,.59-.19,1,1,0,0,0,.4-1l-1-5.68,4.13-4A1,1,0,0,0,22,9.67Zm-6.15,4a1,1,0,0,0-.29.88l.72,4.2-3.76-2a1.06,1.06,0,0,0-.94,0l-3.76,2,.72-4.2a1,1,0,0,0-.29-.88l-3-3,4.21-.61a1,1,0,0,0,.76-.55L12,5.7l1.88,3.82a1,1,0,0,0,.76.55l4.21.61Z" />
-                                                        </svg>
-                                                        7.2
-                                                    </td>
-                                                </tr>
-                                                <tr className="border-b border-gray-700">
-                                                    <td className="py-3 px-2">
-                                                        <a
-                                                            href="#"
-                                                            className="text-blue-400 hover:text-blue-300"
-                                                        >
-                                                            Benched
-                                                        </a>
-                                                    </td>
-                                                    <td className="py-3 px-2 text-gray-400">
-                                                        Charles Baker
-                                                    </td>
-                                                    <td className="py-3 px-2 flex items-center">
-                                                        <svg
-                                                            className="w-4 h-4 text-yellow-400 mr-1"
-                                                            fill="currentColor"
-                                                            viewBox="0 0 24 24"
-                                                        >
-                                                            <path d="M22,9.67A1,1,0,0,0,21.14,9l-5.69-.83L12.9,3a1,1,0,0,0-1.8,0L8.55,8.16,2.86,9a1,1,0,0,0-.81.68,1,1,0,0,0,.25,1l4.13,4-1,5.68A1,1,0,0,0,6.9,21.44L12,18.77l5.1,2.67a.93.93,0,0,0,.46.12,1,1,0,0,0,.59-.19,1,1,0,0,0,.4-1l-1-5.68,4.13-4A1,1,0,0,0,22,9.67Zm-6.15,4a1,1,0,0,0-.29.88l.72,4.2-3.76-2a1.06,1.06,0,0,0-.94,0l-3.76,2,.72-4.2a1,1,0,0,0-.29-.88l-3-3,4.21-.61a1,1,0,0,0,.76-.55L12,5.7l1.88,3.82a1,1,0,0,0,.76.55l4.21.61Z" />
-                                                        </svg>
-                                                        6.3
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
+                                {/* Latest reviews */}
+
+                                <LastestReview session={session} />
                             </div>
                         </div>
                     )}
@@ -294,7 +229,9 @@ export default function ProfilePage() {
                             access_token={session?.user.access_token}
                         />
                     )}
-                    {activeTab === 'settings' && <ProfileSettings />}
+                    {activeTab === 'settings' && (
+                        <ProfileSettings userId={session?.user.id} />
+                    )}
                 </div>
             </div>
         </div>

@@ -1,81 +1,22 @@
 'use client';
-
-import Image from 'next/image';
-import Link from 'next/link';
 import Breadcrumb from '@/src/components/common/BreadCrumb';
 import Card from '@/src/components/common/Card';
-import Filter from '@/src/components/common/Filter';
-import SubscriptionsSection from '@/src/components/common/SubscriptionSection';
 import { useEffect, useState } from 'react';
 import { sendRequestClient } from '@/src/utils/lib/sendrequestclient';
-import { post } from 'jquery';
 
 const PAGE_SIZE = 12;
 
 export default function CategoryPage() {
     const breadcrumbItems = [
         { label: 'Home', href: '/' },
-        { label: 'Catalog', href: '/catalog' },
-        { label: 'Category' },
+        { label: 'Catalog', href: '/recommendations' },
+        { label: 'Recommendations' },
     ];
 
     const genres = [
         { value: 'Phim Hành Động', label: 'Action' },
         { value: 'Phim Chính Kịch', label: 'Drama' },
         { value: 'Phim Hoạt Hình', label: 'Cartoon' },
-    ];
-
-    const years = [
-        { value: '', label: 'All Years' },
-        { value: '2025', label: '2025' },
-        { value: '2024', label: '2024' },
-        { value: '2023', label: '2023' },
-    ];
-
-    const qualities = [
-        { value: 'all', label: 'All Qualities' },
-        { value: 'hd', label: 'HD' },
-        { value: 'fullhd', label: 'FullHD' },
-        { value: '4k', label: '4K' },
-    ];
-
-    const subscriptions = [
-        {
-            image: 'img/card/1.png',
-            title: 'Netflix',
-            description: 'Watch movies and series online',
-            link: '/subscription/1',
-        },
-        {
-            image: 'img/card/2.png',
-            title: 'Disney+',
-            description: 'Stream your favorite Disney content',
-            link: '/subscription/2',
-        },
-        {
-            image: 'img/card/3.png',
-            title: 'HBO Max',
-            description: 'Premium movies and series',
-            link: '/subscription/3',
-        },
-        {
-            image: 'img/card/1.png',
-            title: 'Netflix',
-            description: 'Watch movies and series online',
-            link: '/subscription/1',
-        },
-        {
-            image: 'img/card/2.png',
-            title: 'Disney+',
-            description: 'Stream your favorite Disney content',
-            link: '/subscription/2',
-        },
-        {
-            image: 'img/card/3.png',
-            title: 'HBO Max',
-            description: 'Premium movies and series',
-            link: '/subscription/3',
-        },
     ];
 
     type MovieType = 'Free' | 'Premium';
@@ -90,37 +31,34 @@ export default function CategoryPage() {
     }
 
     const [selectedGenre, setGenre] = useState('');
-    const [selectedYear, setYear] = useState('');
     const [movies, setMovies] = useState([]);
     const [page, setPage] = useState(1);
     const [loading, setLoading] = useState(false);
     const [hasMore, setHasMore] = useState(true);
+
+    const userId = 18;
 
     const fetchMovies = async (pageNumber: number) => {
         setLoading(true);
 
         const res = await sendRequestClient<IBackendRes<IModelPaginate<Movie>>>(
             {
-                url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/movies`,
-                method: 'POST',
-                body: {
-                    current: pageNumber, // ✅ dùng param
-                    pageSize: PAGE_SIZE,
+                url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/user-interact/recommendation/userproflie/${userId}`,
+                method: 'GET',
+                queryParams: {
+                    page: pageNumber,
+                    page_size: PAGE_SIZE,
                     genre: selectedGenre || undefined,
-                    year: selectedYear || undefined,
                 },
             },
         );
 
-        const paginate = res.data;
+        const paginate = res.data; // ⚠️ nếu có IBackendRes
+        console.log(paginate);
 
         setMovies((prev) =>
-            pageNumber === 1 ? paginate.result : [...prev, ...paginate.result],
+            pageNumber === 1 ? paginate : [...prev, ...paginate],
         );
-
-        if (paginate.meta.current >= paginate.meta.pages) {
-            setHasMore(false);
-        }
 
         setLoading(false);
     };
@@ -132,11 +70,10 @@ export default function CategoryPage() {
 
     // ===== FILTER CHANGE =====
     useEffect(() => {
-        console.log(selectedGenre, selectedYear);
         setPage(1);
         setHasMore(true);
         fetchMovies(1);
-    }, [selectedGenre, selectedYear]);
+    }, [selectedGenre]);
 
     // ===== LOAD MORE =====
     const handleLoadMore = () => {
@@ -164,7 +101,7 @@ export default function CategoryPage() {
                     <div className="row">
                         <div className="col-12">
                             <div className="catalog__nav">
-                                <div className="catalog__select-wrap gap-3">
+                                <div className="catalog__select-wrap">
                                     <select
                                         className="text-white"
                                         name="genres"
@@ -188,25 +125,6 @@ export default function CategoryPage() {
                                                 value={g.value}
                                             >
                                                 {g.label}
-                                            </option>
-                                        ))}
-                                    </select>
-
-                                    <select
-                                        className="text-white"
-                                        name="years"
-                                        value={selectedYear}
-                                        onChange={(e) => {
-                                            setYear(e.target.value);
-                                        }}
-                                    >
-                                        {years.map((y, idx) => (
-                                            <option
-                                                className="text-black"
-                                                key={idx}
-                                                value={y.value}
-                                            >
-                                                {y.label}
                                             </option>
                                         ))}
                                     </select>
@@ -243,7 +161,6 @@ export default function CategoryPage() {
                     </div>
                 </div>
             </div>
-            <SubscriptionsSection subscriptions={subscriptions} />
         </div>
     );
 }
