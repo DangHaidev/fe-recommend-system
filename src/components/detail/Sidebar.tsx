@@ -1,27 +1,39 @@
-
 export default function Sidebar() {
-  return (
-    <div className="sidebar sidebar--mt">
-      {/* subscribe */}
-      <div className="row">
-        <div className="col-12">
-          <form action="#" className="subscribe">
-            <div className="subscribe__img">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13.64,9.74l-.29,1.73A1.55,1.55,0,0,0,14,13a1.46,1.46,0,0,0,1.58.09L17,12.28l1.44.79A1.46,1.46,0,0,0,20,13a1.55,1.55,0,0,0,.63-1.51l-.29-1.73,1.2-1.22a1.54,1.54,0,0,0-.85-2.6l-1.62-.24-.73-1.55a1.5,1.5,0,0,0-2.72,0l-.73,1.55-1.62.24a1.54,1.54,0,0,0-.85,2.6Zm1.83-2.13a1.51,1.51,0,0,0,1.14-.85L17,5.93l.39.83a1.55,1.55,0,0,0,1.14.86l1,.14-.73.74a1.57,1.57,0,0,0-.42,1.34l.16,1-.79-.43a1.48,1.48,0,0,0-1.44,0l-.79.43.16-1a1.54,1.54,0,0,0-.42-1.33l-.73-.75ZM21,15.26a1,1,0,0,0-1,1v3a1,1,0,0,1-1,1H5a1,1,0,0,1-1-1V9.67l5.88,5.88a2.94,2.94,0,0,0,2.1.88l.27,0a1,1,0,0,0,.91-1.08,1,1,0,0,0-1.09-.91.94.94,0,0,1-.77-.28L5.41,8.26H9a1,1,0,0,0,0-2H5a3,3,0,0,0-3,3v10a3,3,0,0,0,3,3H19a3,3,0,0,0,3-3v-3A1,1,0,0,0,21,15.26Z" /></svg>
+    return (
+        <div className="sidebar sidebar--mt">
+            {/* subscribe */}
+            <div className="row">
+                <div className="col-12">
+                    <form action="#" className="subscribe">
+                        <div className="subscribe__img">
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 24 24"
+                            >
+                                <path d="M13.64,9.74l-.29,1.73A1.55,1.55,0,0,0,14,13a1.46,1.46,0,0,0,1.58.09L17,12.28l1.44.79A1.46,1.46,0,0,0,20,13a1.55,1.55,0,0,0,.63-1.51l-.29-1.73,1.2-1.22a1.54,1.54,0,0,0-.85-2.6l-1.62-.24-.73-1.55a1.5,1.5,0,0,0-2.72,0l-.73,1.55-1.62.24a1.54,1.54,0,0,0-.85,2.6Zm1.83-2.13a1.51,1.51,0,0,0,1.14-.85L17,5.93l.39.83a1.55,1.55,0,0,0,1.14.86l1,.14-.73.74a1.57,1.57,0,0,0-.42,1.34l.16,1-.79-.43a1.48,1.48,0,0,0-1.44,0l-.79.43.16-1a1.54,1.54,0,0,0-.42-1.33l-.73-.75ZM21,15.26a1,1,0,0,0-1,1v3a1,1,0,0,1-1,1H5a1,1,0,0,1-1-1V9.67l5.88,5.88a2.94,2.94,0,0,0,2.1.88l.27,0a1,1,0,0,0,.91-1.08,1,1,0,0,0-1.09-.91.94.94,0,0,1-.77-.28L5.41,8.26H9a1,1,0,0,0,0-2H5a3,3,0,0,0-3,3v10a3,3,0,0,0,3,3H19a3,3,0,0,0,3-3v-3A1,1,0,0,0,21,15.26Z" />
+                            </svg>
+                        </div>
+                        <h4 className="subscribe__title">Notifications</h4>
+                        <p className="subscribe__text">
+                            Subscribe to notifications about new episodes
+                        </p>
+                        <div className="sign__group">
+                            <input
+                                type="text"
+                                className="sign__input"
+                                placeholder="Email"
+                            />
+                        </div>
+                        <button type="button" className="sign__btn">
+                            Send
+                        </button>
+                    </form>
+                </div>
             </div>
-            <h4 className="subscribe__title">Notifications</h4>
-            <p className="subscribe__text">Subscribe to notifications about new episodes</p>
-            <div className="sign__group">
-              <input type="text" className="sign__input" placeholder="Email" />
-            </div>
-            <button type="button" className="sign__btn">Send</button>
-          </form>
-        </div>
-      </div>
-      {/* end subscribe */}
+            {/* end subscribe */}
 
-      {/* new items */}
-      <div className="row row--grid">
+            {/* new items */}
+            {/* <div className="row row--grid">
         <div className="col-12">
           <h5 className="sidebar__title">New items</h5>
         </div>
@@ -93,8 +105,8 @@ export default function Sidebar() {
             </ul>
           </div>
         </div>
-      </div>
-      {/* end new items */}
-    </div>
-  );
+      </div> */}
+            {/* end new items */}
+        </div>
+    );
 }

@@ -199,10 +199,10 @@ export default function ProfileSettings({ userId }: any) {
                                         className="block text-sm font-medium text-gray-300 mb-2"
                                         htmlFor="oldpass"
                                     >
-                                        Old Password
+                                        New Password
                                     </label>
                                     <input
-                                        id="oldpass"
+                                        id="newpass"
                                         type="password"
                                         className="w-full px-4 py-3 rounded-xl bg-[#0f172a] text-white placeholder-gray-400 border border-gray-600 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                     />

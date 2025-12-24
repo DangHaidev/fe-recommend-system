@@ -3,13 +3,13 @@ import Breadcrumb from '@/src/components/common/BreadCrumb';
 import Card from '@/src/components/common/Card';
 import { useEffect, useState } from 'react';
 import { sendRequestClient } from '@/src/utils/lib/sendrequestclient';
+import { useSession } from 'next-auth/react';
 
 const PAGE_SIZE = 12;
 
 export default function CategoryPage() {
     const breadcrumbItems = [
-        { label: 'Home', href: '/' },
-        { label: 'Catalog', href: '/recommendations' },
+        { label: 'Home', href: '/home' },
         { label: 'Recommendations' },
     ];
 
@@ -36,7 +36,10 @@ export default function CategoryPage() {
     const [loading, setLoading] = useState(false);
     const [hasMore, setHasMore] = useState(true);
 
-    const userId = 18;
+    const { data: session, status } = useSession();
+
+    const [isSessionLoaded, setIsSessionLoaded] = useState(false);
+    const userId = session?.user.id;
 
     const fetchMovies = async (pageNumber: number) => {
         setLoading(true);
@@ -63,17 +66,14 @@ export default function CategoryPage() {
         setLoading(false);
     };
 
-    // Load lần đầu
-    useEffect(() => {
-        fetchMovies(1);
-    }, []);
-
     // ===== FILTER CHANGE =====
     useEffect(() => {
+        if (status !== 'authenticated' || !userId) return;
+
         setPage(1);
         setHasMore(true);
         fetchMovies(1);
-    }, [selectedGenre]);
+    }, [status, userId, selectedGenre]);
 
     // ===== LOAD MORE =====
     const handleLoadMore = () => {
@@ -95,7 +95,7 @@ export default function CategoryPage() {
 
     return (
         <div>
-            <Breadcrumb title="Category" items={breadcrumbItems} />
+            <Breadcrumb title="Recommendations" items={breadcrumbItems} />
             <div className="catalog catalog--page">
                 <div className="container">
                     <div className="row">

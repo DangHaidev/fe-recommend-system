@@ -194,7 +194,6 @@ export default function Hero({ movie }: MovieProps) {
                             trailerUrl={movie.trailer}
                             movieId={movie.tmdbId}
                         />
-                        <SeriesCarousel />
 
                         <div className="col-12 col-xl-8">
                             {/* categories */}
