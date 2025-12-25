@@ -1,15 +1,17 @@
 /* eslint-disable react/jsx-no-undef */
 import { sendRequestClient } from '@/src/utils/lib/sendrequestclient';
 import { Button, Form, Input, Select } from 'antd';
+import { signIn, useSession } from 'next-auth/react';
 import { FormEvent, useState } from 'react';
 
 export default function ProfileSettings({ userId }: any) {
     console.log('userId in profile settings', userId);
+    const { update } = useSession();
 
     async function onSubmit(values: any) {
         console.log('Form values:', values);
 
-        let imageUrl = '';
+        let body: any = { ...values };
 
         // 1. Upload file trước
         if (file) {
@@ -22,7 +24,7 @@ export default function ProfileSettings({ userId }: any) {
             });
 
             const uploadData = await uploadRes.json();
-            imageUrl = uploadData.url;
+            body.image = uploadData.url;
         }
 
         // 2. Gửi lên backend
@@ -30,38 +32,19 @@ export default function ProfileSettings({ userId }: any) {
             url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/user/${userId}`,
             method: 'PUT',
             body: {
-                ...values, // giá trị antd form
-                image: imageUrl,
+                body,
             },
         });
 
         console.log('Backend response:', res);
 
-        // Tiếp tục gửi dữ liệu đăng ký
-        // const res = await sendRequestClient<IBackendRes<any>>({
-        //     url: "http://127.0.0.1:8080/auth/register",
-        //     method: "POST",
-        //     body: {
-        //         username: form.get("username") as string,
-        //         avatar: imageUrl, // gửi URL ảnh
-        //     },
-        // });
-
-        // const res = await sendRequestClient<IBackendRes<any>>({
-        //     // url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/register`,
-        //     url: 'http://127.0.0.1:8080/auth/register',
-        //     method: 'POST',
-        //     body: formObj,
-        // });
-
-        // console.log(res);
-        // Handle response if necessary
-        // if (res?.data) {
-        //     router.push(`/verify/${res?.data?.id}`);
-        // } else {
-        //     setError('Lỗi đăng ký');
-        // }
-        // ...
+        if (res?.statusCode === 200) {
+            await update({
+                name: body.name,
+                image: body.image,
+            });
+            window.location.reload();
+        }
     }
 
     const [preview, setPreview] = useState(null);
@@ -137,9 +120,9 @@ export default function ProfileSettings({ userId }: any) {
                                 </Form.Item>
                             </div>
 
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                {/* Status */}
-                                <Form.Item
+                            {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-4"> */}
+                            {/* Status */}
+                            {/* <Form.Item
                                     label={
                                         <span className="block text-sm font-medium text-gray-300 mb-2">
                                             Status
@@ -151,10 +134,10 @@ export default function ProfileSettings({ userId }: any) {
                                         placeholder="Active"
                                         className="w-full px-4 py-3 rounded-xl bg-[#0f172a] text-white placeholder-gray-400 border border-gray-600 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                     />
-                                </Form.Item>
+                                </Form.Item> */}
 
-                                {/* Last Name */}
-                                <Form.Item
+                            {/* Last Name */}
+                            {/* <Form.Item
                                     label={
                                         <span className="block text-sm font-medium text-gray-300 mb-2">
                                             Last Name
@@ -167,7 +150,7 @@ export default function ProfileSettings({ userId }: any) {
                                         className="w-full px-4 py-3 rounded-xl bg-[#0f172a] text-white placeholder-gray-400 border border-gray-600 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                     />
                                 </Form.Item>
-                            </div>
+                            </div> */}
 
                             {/* Save Button */}
                             <div className="flex justify-start">
@@ -194,7 +177,7 @@ export default function ProfileSettings({ userId }: any) {
                             {/* Left Column: Password + Genre */}
                             <div className="space-y-4">
                                 {/* Old Password */}
-                                <div>
+                                {/* <div>
                                     <label
                                         className="block text-sm font-medium text-gray-300 mb-2"
                                         htmlFor="oldpass"
@@ -206,7 +189,20 @@ export default function ProfileSettings({ userId }: any) {
                                         type="password"
                                         className="w-full px-4 py-3 rounded-xl bg-[#0f172a] text-white placeholder-gray-400 border border-gray-600 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                     />
-                                </div>
+                                </div> */}
+                                <Form.Item
+                                    label={
+                                        <span className="block text-sm font-medium text-gray-300 mb-2">
+                                            New Password
+                                        </span>
+                                    }
+                                    name="password"
+                                >
+                                    <Input
+                                        type="password"
+                                        className="w-full px-4 py-3 rounded-xl bg-[#0f172a] text-white placeholder-gray-400 border border-gray-600 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    />
+                                </Form.Item>
 
                                 {/* Genre (Multiple Select) */}
                                 <Form.Item
@@ -215,10 +211,10 @@ export default function ProfileSettings({ userId }: any) {
                                             Genre
                                         </span>
                                     }
-                                    name="genre"
+                                    name="genres"
                                     rules={[
                                         {
-                                            required: true,
+                                            required: false,
                                             message:
                                                 'Please select at least one genre',
                                         },
