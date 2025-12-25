@@ -92,7 +92,7 @@ export default function ProfilePage() {
                                     {session?.user?.name ?? 'null'}
                                 </h3>
                                 <span className="text-0.5xl text-gray-200 text-sm">
-                                    FlixTV ID: 11104
+                                    FlixTV ID: {session?.user?.id ?? 'null'}
                                 </span>
                             </div>
                         </div>

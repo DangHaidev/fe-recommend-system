@@ -1,14 +1,8 @@
 'use client';
-
-import Image from 'next/image';
-import Link from 'next/link';
 import Breadcrumb from '@/src/components/common/BreadCrumb';
 import Card from '@/src/components/common/Card';
-import Filter from '@/src/components/common/Filter';
-import SubscriptionsSection from '@/src/components/common/SubscriptionSection';
 import { useEffect, useState } from 'react';
 import { sendRequestClient } from '@/src/utils/lib/sendrequestclient';
-import { post } from 'jquery';
 
 const PAGE_SIZE = 12;
 
@@ -30,52 +24,6 @@ export default function CategoryPage() {
         { value: '2025', label: '2025' },
         { value: '2024', label: '2024' },
         { value: '2023', label: '2023' },
-    ];
-
-    const qualities = [
-        { value: 'all', label: 'All Qualities' },
-        { value: 'hd', label: 'HD' },
-        { value: 'fullhd', label: 'FullHD' },
-        { value: '4k', label: '4K' },
-    ];
-
-    const subscriptions = [
-        {
-            image: 'img/card/1.png',
-            title: 'Netflix',
-            description: 'Watch movies and series online',
-            link: '/subscription/1',
-        },
-        {
-            image: 'img/card/2.png',
-            title: 'Disney+',
-            description: 'Stream your favorite Disney content',
-            link: '/subscription/2',
-        },
-        {
-            image: 'img/card/3.png',
-            title: 'HBO Max',
-            description: 'Premium movies and series',
-            link: '/subscription/3',
-        },
-        {
-            image: 'img/card/1.png',
-            title: 'Netflix',
-            description: 'Watch movies and series online',
-            link: '/subscription/1',
-        },
-        {
-            image: 'img/card/2.png',
-            title: 'Disney+',
-            description: 'Stream your favorite Disney content',
-            link: '/subscription/2',
-        },
-        {
-            image: 'img/card/3.png',
-            title: 'HBO Max',
-            description: 'Premium movies and series',
-            link: '/subscription/3',
-        },
     ];
 
     type MovieType = 'Free' | 'Premium';
@@ -166,7 +114,7 @@ export default function CategoryPage() {
                             <div className="catalog__nav">
                                 <div className="catalog__select-wrap gap-3">
                                     <select
-                                        className="text-white"
+                                        className="text-white bg-[#151f30] rounded-2"
                                         name="genres"
                                         value={selectedGenre}
                                         onChange={(e) => {
@@ -177,13 +125,13 @@ export default function CategoryPage() {
                                             setGenre(e.target.value);
                                         }}
                                     >
-                                        <option className="text-black" value="">
+                                        <option className="text-white" value="">
                                             All genres
                                         </option>
                                         {/* ✅ BẮT BUỘC */}
                                         {genres.map((g) => (
                                             <option
-                                                className="text-black"
+                                                className="text-white"
                                                 key={g.value}
                                                 value={g.value}
                                             >
@@ -193,7 +141,7 @@ export default function CategoryPage() {
                                     </select>
 
                                     <select
-                                        className="text-white"
+                                        className="text-white bg-[#151f30]"
                                         name="years"
                                         value={selectedYear}
                                         onChange={(e) => {
@@ -202,7 +150,7 @@ export default function CategoryPage() {
                                     >
                                         {years.map((y, idx) => (
                                             <option
-                                                className="text-black"
+                                                className="text-white"
                                                 key={idx}
                                                 value={y.value}
                                             >
@@ -243,7 +191,6 @@ export default function CategoryPage() {
                     </div>
                 </div>
             </div>
-            <SubscriptionsSection subscriptions={subscriptions} />
         </div>
     );
 }
