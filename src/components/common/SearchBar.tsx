@@ -35,7 +35,7 @@ const SearchBar = () => {
                     `/movies/search/?q=${query}`,
             );
             const data = await res.json();
-            setResults(data.data);
+            setResults(data.data.slice(0, 8));
         }, 300);
 
         return () => clearTimeout(timeout);
@@ -70,21 +70,23 @@ const SearchBar = () => {
                                 key={movie.id}
                                 className="p-1 hover:bg-gray-700"
                             >
-                                {/* 🎬 {movie.title} ({movie.year}) */}
-                                <div className="flex flex-row gap-2">
-                                    <div className="flex-shrink-0">
-                                        <Image
-                                            src={movie.posterUrl}
-                                            alt={'hinh anh'}
-                                            width={50}
-                                            height={60}
-                                        />
+                                <a href={'/detailmovie/' + movie.tmdbId}>
+                                    {/* 🎬 {movie.title} ({movie.year}) */}
+                                    <div className="flex flex-row gap-2">
+                                        <div className="flex-shrink-0">
+                                            <Image
+                                                src={movie.posterUrl}
+                                                alt={'hinh anh'}
+                                                width={50}
+                                                height={60}
+                                            />
+                                        </div>
+                                        <div className="text-xs whitespace-normal">
+                                            <h1>{movie.title}</h1>
+                                            <p>{movie.runtime}</p>
+                                        </div>
                                     </div>
-                                    <div className="text-xs whitespace-normal">
-                                        <h1>{movie.title}</h1>
-                                        <p>{movie.runtime}</p>
-                                    </div>
-                                </div>
+                                </a>
                             </li>
                         ))}
                     </ul>
