@@ -11,12 +11,10 @@ export default async function DetailPage({
     params: Promise<{ id: string }>;
 }) {
     const { id } = await params;
-    // Gọi backend NestJS để lấy chi tiết phim
     const res = await fetch(
         process.env.NEXT_PUBLIC_BACKEND_URL + `/movies/${id}`,
         {
-            // cache: "no-store", // nếu muốn luôn lấy mới
-            next: { revalidate: 3600 }, // revalidate mỗi 1 tiếng
+            next: { revalidate: 3600 },
         },
     );
     console.log('>>> res', res);

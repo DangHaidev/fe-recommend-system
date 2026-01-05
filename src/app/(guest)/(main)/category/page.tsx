@@ -73,12 +73,11 @@ export default function CategoryPage() {
         setLoading(false);
     };
 
-    // Load lần đầu
+    // Load initial movies
     useEffect(() => {
         fetchMovies(1);
     }, []);
 
-    // ===== FILTER CHANGE =====
     useEffect(() => {
         console.log(selectedGenre, selectedYear);
         setPage(1);
@@ -86,13 +85,12 @@ export default function CategoryPage() {
         fetchMovies(1);
     }, [selectedGenre, selectedYear]);
 
-    // ===== LOAD MORE =====
     const handleLoadMore = () => {
         const nextPage = page + 1;
         setPage(nextPage);
-        fetchMovies(nextPage); // ✅ dùng page mới
+        fetchMovies(nextPage);
     };
-    // map lại dữ liệu cho phù hợp với Card
+    // map data
     const formattedMovies = movies.map((movie: any) => ({
         id: movie.id,
         posterUrl: movie.posterUrl, // gắn prefix ảnh

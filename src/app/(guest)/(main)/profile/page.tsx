@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from 'react';
 import { signOut } from 'next-auth/react';
-import ProfileHeader from '@/src/components/profile/ProfileHeader';
 import ProfileTabs from '@/src/components/profile/ProfileTabs';
 import ProfileStats from '@/src/components/profile/ProfileStats';
 import FavoritesGrid from '@/src/components/profile/FavoritesGrid';
@@ -13,7 +12,7 @@ import LastestReview from '@/src/components/profile/LastestReview';
 
 export default function ProfilePage() {
     const [activeTab, setActiveTab] = useState('profile');
-    const { data: session, status, update } = useSession();
+    const { data: session, status } = useSession();
 
     const [isSessionLoaded, setIsSessionLoaded] = useState(false);
 

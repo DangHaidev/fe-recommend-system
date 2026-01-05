@@ -34,16 +34,12 @@ export default function SignInPage() {
 
     const handleEmailSignIn = async () => {
         try {
-            // await signInWithEmailAndPassword(auth, email, password);
-            // console.log(">>> ",email,password)
-            // const data = await signIn("credentials", { email,password, redirect: false })
             const res = await authenticate(email, password);
 
             if (res?.error) {
                 setError('Error login!');
                 if (res?.code === 2) {
                     setIsModalOpen(true);
-                    // router.push('/verify');
                     return;
                 }
             } else {

@@ -56,7 +56,7 @@ export default function CategoryPage() {
             },
         );
 
-        const paginate = res.data; // ⚠️ nếu có IBackendRes
+        const paginate = res.data;
         console.log(paginate);
 
         setMovies((prev) =>
@@ -65,8 +65,6 @@ export default function CategoryPage() {
 
         setLoading(false);
     };
-
-    // ===== FILTER CHANGE =====
     useEffect(() => {
         if (status !== 'authenticated' || !userId) return;
 
@@ -75,16 +73,15 @@ export default function CategoryPage() {
         fetchMovies(1);
     }, [status, userId, selectedGenre]);
 
-    // ===== LOAD MORE =====
     const handleLoadMore = () => {
         const nextPage = page + 1;
         setPage(nextPage);
-        fetchMovies(nextPage); // ✅ dùng page mới
+        fetchMovies(nextPage); //
     };
-    // map lại dữ liệu cho phù hợp với Card
+    // map
     const formattedMovies = movies.map((movie: any) => ({
         id: movie.id,
-        posterUrl: movie.posterUrl, // gắn prefix ảnh
+        posterUrl: movie.posterUrl,
         title: movie.title,
         rating: movie.vote_average,
         genres: movie.genres || [],
